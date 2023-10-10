@@ -1,9 +1,9 @@
 services:
   web:
     build: .
-    image: mydjango_docker    #docker compose built image name
+    image: mydjango_image    #docker compose built image name
     container_name: django_container
-    command: python manage.py runserver 0.0.0.0:8000
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
@@ -17,8 +17,11 @@ services:
   db:
     image: postgres
     container_name: postgres_container
+    restart: always
     volumes:
       - ./data/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_DB=social_media_db
       - POSTGRES_USER=demo_user
