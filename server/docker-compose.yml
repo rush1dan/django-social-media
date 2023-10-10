@@ -2,7 +2,7 @@ services:
   web:
     build: .
     image: django-postgress-docker    #docker compose built image name
-    command: python manage.py runserver http://localhost:8000
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
@@ -15,3 +15,5 @@ services:
 ## To setup django project in docker image and automatically sync created files and folders bi-directionally with local dev environment through volume bind mount:
 ## docker compose run web django-admin startproject djangoserver .
 ## ** last . means create django project in the current docker workdir
+## To run django server: 
+## docker compose up
