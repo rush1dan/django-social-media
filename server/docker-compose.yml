@@ -1,14 +1,28 @@
 services:
   web:
     build: .
-    image: django-postgress-docker    #docker compose built image name
+    image: mydjango_docker    #docker compose built image name
+    container_name: django_container
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
       - "8000:8000"
-
-
+    environment:
+      - POSTGRES_NAME=social_media_db
+      - POSTGRES_USER=demo_user
+      - POSTGRES_PASSWORD=demo_password
+    depends_on:
+      - db
+  db:
+    image: postgres
+    container_name: postgres_container
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=social_media_db
+      - POSTGRES_USER=demo_user
+      - POSTGRES_PASSWORD=demo_password
 
 
 
