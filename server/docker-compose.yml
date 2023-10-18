@@ -6,6 +6,7 @@ services:
     command: bash -c "python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code   #Only for development :: Remove this volume while deploying and instead COPY all with Dockerfile and docker build
+      - /code/.venv/    #Don't include .venv in the container; only for local intellisense purposes
     ports:
       - "8000:8000"
     environment:    #Replace with .env file in production/deployment
