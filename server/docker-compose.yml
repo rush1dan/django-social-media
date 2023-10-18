@@ -3,7 +3,7 @@ services:
     build: .
     image: mydjango_image    #docker compose built image name
     container_name: django_container
-    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code   #Only for development :: Remove this volume while deploying and instead COPY all with Dockerfile and docker build
     ports:
