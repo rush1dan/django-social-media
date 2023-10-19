@@ -1,5 +1,5 @@
 from django.db import models
-from apps.user.models import User
+from django.contrib.auth.models import User
 
 def upload_to(instance, filename):
     return f'post/{instance.id}/{filename}'
