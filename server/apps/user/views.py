@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-from apps.user.serializers import (UserCreateSerializer)
+from apps.user.serializers import UserCreateSerializer, UserSerializer
 from django.core.exceptions import ObjectDoesNotExist
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -49,13 +49,24 @@ def register_view(request):
 
     ## Authentications requires unique username and password only for default User model
 
-@api_view(['POST'])
-def login_view(request):
-    try:
-        user = authenticate(username=request.data['username'], password=request.data['password'])
-        if user is not None:
-            return Response("User Authenticated", status=200)
-        else:
-            return Response("Invalid Credentials", status=401)
-    except Exception as ex:
-        return Response("Something went wrong", status=500)
+# @api_view(['POST'])
+# def login_view(request):
+#     try:
+#         user = authenticate(username=request.data['username'], password=request.data['password'])
+#         if user is not None:
+#             return Response("User Authenticated", status=200)
+#         else:
+#             return Response("Invalid Credentials", status=401)
+#     except Exception as ex:
+#         return Response("Something went wrong", status=500)
+
+## Login to be handled through JWT authentication
+
+
+## Send in the access token in the Authorization header of the request like Authorization: 'Bearer [access token]'
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def authentication_test_view(request):
+    user = request.user
+    serialized_user = UserSerializer(user)
+    return Response(serialized_user.data, status=200)

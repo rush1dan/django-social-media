@@ -1,11 +1,14 @@
 from .models import User
 from rest_framework import serializers
 
+## For sending information regarding user to the requesting client
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ['password']
+        exclude = ['id', 'password']
 
+
+## For registering user
 class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
