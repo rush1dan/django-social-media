@@ -18,7 +18,6 @@ class PostCreateSerializer(serializers.ModelSerializer):
 
 ## For retrieving post
 class PostSerializer(serializers.ModelSerializer):
-    author = UserSerializer()
     class Meta:
         model = Post
-        fields = '__all__'
+        exclude = ['author']
