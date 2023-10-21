@@ -13,5 +13,6 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('test/', user_views.authentication_test_view),
-    path('profile/<int:pk>/', user_views.profile_view)
+    path('profile/<int:pk>/', user_views.profile_view),
+    path('follow/<int:pk>/', user_views.follow_view)
 ]

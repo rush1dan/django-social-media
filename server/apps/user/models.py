@@ -9,7 +9,7 @@ class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='info')
     image = models.ImageField(upload_to=user_image, blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
-    followers = models.ManyToManyField('self', blank=True, null=True)
+    followers = models.ManyToManyField('self', symmetrical=False, blank=True, null=True)
 
     def __str__(self) -> str:
         return self.user.username
