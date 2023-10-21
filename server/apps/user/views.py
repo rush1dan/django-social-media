@@ -7,9 +7,12 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.models import User
+from .models import UserInfo
 from django.contrib.auth import authenticate
 from apps.user.serializers import UserCreateSerializer, UserSerializer
 from django.core.exceptions import ObjectDoesNotExist
+
+from traceback import print_exc as print_error
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -70,3 +73,21 @@ def authentication_test_view(request):
     user = request.user
     serialized_user = UserSerializer(user)
     return Response(serialized_user.data, status=200)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def profile_view(request, pk):
+    try:
+        requestingUser = request.user
+        if requestingUser.id == pk:   #user viewing own profile
+            return Response('Self', status=200)
+        else:   #not own profile
+            targetuser = User.objects.get(id=pk)
+            if UserInfo.objects.filter(user=targetuser, followers=requestingUser.info):     #user following this profile's user
+                return Response('Following', status=200)
+            else:   #user not following this profile's user
+                return Response('Not following', status=200)
+    except Exception as ex:
+        print_error()
+        return Response('Something went wrong', status=500)
