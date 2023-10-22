@@ -37,7 +37,7 @@ def posts_view(request, pk):
         requestingUser = request.user
         targetUser = User.objects.get(id=pk)
         
-        if is_following(requesting_user=requestingUser, target_user=targetUser):
+        if is_following(requesting_user=requestingUser, target_user=targetUser) or requestingUser.id == pk:
             serialized_posts_data = get_serialized_user_posts(targetUser)
             return Response(serialized_posts_data, status=200)
         else:

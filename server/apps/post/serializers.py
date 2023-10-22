@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Post, Like
 from django.contrib.auth.models import User
 from apps.user.serializers import UserSerializer, get_serialized_user_info
+from apps.comment.serializers import get_serialized_user_comments
 
 ## For creating post
 class PostCreateSerializer(serializers.ModelSerializer): 
@@ -57,6 +58,7 @@ def get_serialized_user_post(post):
     final_serialized_data['user'] = serialized_user_data
     final_serialized_data['post'] = serialized_post_data
     final_serialized_data['likes'] = get_serialized_post_likes(post)
+    final_serialized_data['comments'] = get_serialized_user_comments(post)
 
     return final_serialized_data
 
