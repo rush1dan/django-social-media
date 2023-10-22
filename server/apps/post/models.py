@@ -8,7 +8,6 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
     description = models.TextField(blank=False, null=False)
     image = models.ImageField(upload_to=upload_to, blank=True, null=True)
-    likes = models.ManyToManyField(User, related_name='likes_set', blank=True, null=True, verbose_name='Likes')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -18,4 +17,16 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
+
+
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    liker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
+
+    def __str__(self) -> str:
+        return f'Like {self.id} by {self.liker.username} on post {self.post.id}'    #type:ignore
+
+    class Meta:
+        verbose_name = 'Like'
+        verbose_name_plural = 'Likes'
 

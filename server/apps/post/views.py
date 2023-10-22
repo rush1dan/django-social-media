@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import Post
 from apps.user.serializers import UserSerializer, UserInfoSerializer
-from .serializers import PostCreateSerializer, PostSerializer
+from .serializers import PostCreateSerializer, get_serialized_user_posts
 
 from traceback import print_exc as print_error
 
@@ -31,32 +31,4 @@ def posts_view(request, pk):
     except Exception as ex:
         print_error()
         return Response("Something went wrong", status=500)
-    
-
-
-def get_serialized_user_post(post):
-    serialized_user_data = UserSerializer(post.author).data
-    serialized_post_data = PostSerializer(post).data
-    serialized_user_info_data = UserInfoSerializer(post.author.info).data
-
-    del serialized_post_data['likes']
-    usef_info_keys_to_remove = ['bio', 'followers']
-    for key in usef_info_keys_to_remove:
-        del serialized_user_info_data[key]
-
-    user_data = {}
-    user_data.update(serialized_user_data)
-    user_data.update(serialized_user_info_data)
-    
-    final_serialized_data = {}
-    final_serialized_data['user'] = user_data
-    final_serialized_data['post'] = serialized_post_data
-
-    return final_serialized_data
-
-def get_serialized_user_posts(user):
-    posts_data = []
-    for post in user.posts.all():
-        posts_data.append(get_serialized_user_post(post))
-    return posts_data
 

@@ -27,3 +27,20 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         exclude = ['user']
+
+
+## For retrieving custom required JSON data
+def get_serialized_user_info(user, fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'image', 'followers'], exclude=[]):
+    serialized_user_data = UserSerializer(user).data
+    serialized_userinfo_data = UserInfoSerializer(user.info).data
+
+    final_serialized_data = serialized_user_data
+    final_serialized_data.update(serialized_userinfo_data)
+
+    copy_data = final_serialized_data.copy()
+
+    for key in copy_data:
+        if key not in fields or key in exclude:
+            del final_serialized_data[key]
+
+    return final_serialized_data
