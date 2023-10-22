@@ -23,10 +23,10 @@ class PostSerializer(serializers.ModelSerializer):
         exclude = ['author']
 
 
-class LikeSerializer(serializers.ModelSerializer):
+class LikeCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = '__all__'
+        fields = []
 
     def create(self, validated_data):
         user = validated_data.pop('user')

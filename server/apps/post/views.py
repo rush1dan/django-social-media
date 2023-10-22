@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import Post
 from apps.user.serializers import UserSerializer, UserInfoSerializer
-from .serializers import PostCreateSerializer, get_serialized_user_posts
+from .serializers import PostCreateSerializer, get_serialized_user_posts, LikeCreateSerializer
 
 from traceback import print_exc as print_error
 
@@ -26,6 +26,23 @@ def posts_view(request, pk):
                 return Response("Post created", status=201)
             else:
                 return Response("Invalid Request", status=400)
+        else:
+            return Response("Invalid Request", status=400)
+    except Exception as ex:
+        print_error()
+        return Response("Something went wrong", status=500)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def likes_view(request, pk):
+    try:
+        requestingUser = request.user
+        targetPost = Post.objects.get(id=pk)
+        serializer = LikeCreateSerializer(data=request.data)    #Just send empty JSON
+        if serializer.is_valid():
+            like = serializer.save(user=requestingUser, post=targetPost)
+            return Response("Like created", status=201)
         else:
             return Response("Invalid Request", status=400)
     except Exception as ex:
