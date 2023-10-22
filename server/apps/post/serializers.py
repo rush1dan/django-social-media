@@ -58,8 +58,10 @@ def get_serialized_post(post, exclude_user=False):
     if not exclude_user:
         final_serialized_data['user'] = serialized_user_data
     final_serialized_data['post'] = serialized_post_data
-    final_serialized_data['likes'] = get_serialized_post_likes(post)
-    final_serialized_data['comments'] = get_serialized_user_comments(post)
+    final_serialized_data['likes'] = post.likes.count()     #Initially show just the count with a hyperlink fetching the actual data
+    final_serialized_data['comments'] = post.comments.count()       #Initially show just the count with a hyperlink fetching the actual data
+    #final_serialized_data['likes'] = get_serialized_post_likes(post)       ##fetch likes later when clicked
+    #final_serialized_data['comments'] = get_serialized_user_comments(post)     ##fetch comments later when clicked
 
     return final_serialized_data
 

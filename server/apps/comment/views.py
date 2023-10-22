@@ -18,7 +18,6 @@ def comments_view(request, pk):
 
         if request.method == 'GET':
             serialized_comments_data = get_serialized_user_comments(targetPost)
-            print("Comments: ", serialized_comments_data)
             return Response(serialized_comments_data, status=200)
         elif request.method == 'POST':
             serializer = CommentCreateSerializer(data=request.data)
