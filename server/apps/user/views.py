@@ -101,12 +101,16 @@ def profile_view(request, pk):
 def follow_view(request, pk):
     try:
         requestingUser = request.user
-        targetuser = User.objects.get(id=pk)
-        if UserInfo.objects.filter(user=targetuser, followers=requestingUser.info):     #user following this profile's user
-            return Response('Already Following', status=200)
+        targetUser = User.objects.get(id=pk)
+
+        if is_following(requesting_user=requestingUser, target_user=targetUser):
+            targetUser.info.followers.remove(requestingUser.info)   #type:ignore
+            return Response(f'Unfollowed {targetUser.first_name} {targetUser.last_name}', status=200)
+        elif requestingUser.id != pk:
+            targetUser.info.followers.add(requestingUser.info)  #type:ignore
+            return Response(f'Following {targetUser.first_name} {targetUser.last_name}', status=200)
         else:
-            targetuser.info.followers.add(requestingUser.info)  #type:ignore
-            return Response(f'Following {targetuser.first_name} {targetuser.last_name}', status=200)
+            return Response("Invalid Request", status=400)
     except Exception as ex:
         print_error()
         return Response('Something went wrong', status=500)
