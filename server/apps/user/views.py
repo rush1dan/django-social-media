@@ -10,6 +10,7 @@ from .models import UserInfo
 from django.contrib.auth import authenticate
 from apps.user.serializers import UserCreateSerializer, UserSerializer
 from django.core.exceptions import ObjectDoesNotExist
+from .utils import is_following
 
 from traceback import print_exc as print_error
 
@@ -82,8 +83,8 @@ def profile_view(request, pk):
         if requestingUser.id == pk:   #user viewing own profile
             return Response('Self', status=200)
         else:   #not own profile
-            targetuser = User.objects.get(id=pk)
-            if UserInfo.objects.filter(user=targetuser, followers=requestingUser.info):     #user following this profile's user
+            targetUser = User.objects.get(id=pk)
+            if is_following(requesting_user=requestingUser, target_user=targetUser):     #user following this profile's user
                 return Response('Following', status=200)
             else:   #user not following this profile's user
                 return Response('Not following', status=200)
