@@ -42,7 +42,7 @@ def likes_view(request, pk):
         targetPost = Post.objects.get(id=pk)
         data = {}
         data['post'] = targetPost.id    #type:ignore
-        data['liker'] = requestingUser.id
+        data['liker'] = requestingUser.id   #representative of the actual object since actual object not serializable directly
         serializer = LikeCreateSerializer(data=data)    #Just send empty JSON #type:ignore
         
         if serializer.is_valid():
