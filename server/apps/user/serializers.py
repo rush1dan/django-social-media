@@ -33,6 +33,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 def get_serialized_user_info(user, fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'image', 'followers'], exclude=[]):
     serialized_user_data = UserSerializer(user).data
     serialized_userinfo_data = UserInfoSerializer(user.info).data
+    del serialized_userinfo_data['id']
 
     final_serialized_data = serialized_user_data
     final_serialized_data.update(serialized_userinfo_data)
