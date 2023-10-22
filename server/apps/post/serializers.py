@@ -50,12 +50,13 @@ def get_serialized_post_likes(post):
         likes_data.append(get_serialized_like(like))
     return likes_data
 
-def get_serialized_user_post(post):
+def get_serialized_post(post, exclude_user=False):
     serialized_user_data = get_serialized_user_info(post.author, exclude=['bio', 'followers'])
     serialized_post_data = PostSerializer(post).data
     
     final_serialized_data = {}
-    final_serialized_data['user'] = serialized_user_data
+    if not exclude_user:
+        final_serialized_data['user'] = serialized_user_data
     final_serialized_data['post'] = serialized_post_data
     final_serialized_data['likes'] = get_serialized_post_likes(post)
     final_serialized_data['comments'] = get_serialized_user_comments(post)
@@ -63,7 +64,16 @@ def get_serialized_user_post(post):
     return final_serialized_data
 
 def get_serialized_user_posts(user):
-    posts_data = []
+    posts_data = {}
+    posts_data['user'] = get_serialized_user_info(user, exclude=['bio', 'followers'])
+    posts_list = []
     for post in user.posts.all():
-        posts_data.append(get_serialized_user_post(post))
+        posts_list.append(get_serialized_post(post, exclude_user=True))
+    posts_data['posts'] = posts_list
     return posts_data
+
+def get_serialized_posts(posts):
+    posts_list = []
+    for post in posts:
+        posts_list.append(get_serialized_post(post))
+    return posts_list

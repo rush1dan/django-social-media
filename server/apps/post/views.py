@@ -3,9 +3,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.models import User
+from apps.user.models import UserInfo
 from .models import Post, Like
 from apps.user.serializers import UserSerializer, UserInfoSerializer
-from .serializers import PostCreateSerializer, get_serialized_user_posts, LikeCreateSerializer
+from .serializers import PostCreateSerializer, get_serialized_user_posts, get_serialized_posts, LikeCreateSerializer
 
 from apps.user.utils import is_following
 from traceback import print_exc as print_error
@@ -42,6 +43,24 @@ def posts_view(request, pk):
             return Response(serialized_posts_data, status=200)
         else:
             return Response("Invalid Request", status=400)
+    except Exception as ex:
+        print_error()
+        return Response("Something went wrong", status=500)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def feed_view(request):
+    try:
+        requestingUser = request.user
+        followedUserInfos = requestingUser.info.following.all()
+        followedUsers = [followedUserInfo.user for followedUserInfo in followedUserInfos]
+        relevantUsers = [requestingUser]
+        relevantUsers.extend(followedUsers)
+        relevantPosts = [post for post in Post.objects.filter(author__in=relevantUsers).order_by('-updated_at')]
+        
+        serialized_posts = get_serialized_posts(relevantPosts)
+        return Response(serialized_posts, status=200)
     except Exception as ex:
         print_error()
         return Response("Something went wrong", status=500)
