@@ -8,6 +8,7 @@ from apps.user.serializers import UserSerializer, UserInfoSerializer
 from .serializers import PostCreateSerializer, get_serialized_user_posts, LikeCreateSerializer
 
 from traceback import print_exc as print_error
+from collections import OrderedDict
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -39,9 +40,13 @@ def likes_view(request, pk):
     try:
         requestingUser = request.user
         targetPost = Post.objects.get(id=pk)
-        serializer = LikeCreateSerializer(data=request.data)    #Just send empty JSON
+        data = {}
+        data['post'] = targetPost.id    #type:ignore
+        data['liker'] = requestingUser.id
+        serializer = LikeCreateSerializer(data=data)    #Just send empty JSON #type:ignore
+        
         if serializer.is_valid():
-            like = serializer.save(user=requestingUser, post=targetPost)
+            like = serializer.save()
             return Response("Like created", status=201)
         else:
             return Response("Invalid Request", status=400)

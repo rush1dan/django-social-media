@@ -26,12 +26,15 @@ class PostSerializer(serializers.ModelSerializer):
 class LikeCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = []
+        fields = ['post', 'liker']
+
+    def validate(self, data):   ##Check if user has already liked this post; if so then invalidate
+        if Like.objects.filter(liker=data['liker'], post=data['post']):
+            raise serializers.ValidationError("User already liked this post")
+        return data
 
     def create(self, validated_data):
-        user = validated_data.pop('user')
-        post = validated_data.pop('post')
-        like = Like.objects.create(post=post, liker=user)
+        like = Like.objects.create(**validated_data)
         return like
     
 def get_serialized_like(like):
