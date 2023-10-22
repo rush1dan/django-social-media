@@ -69,7 +69,7 @@ def get_serialized_user_posts(user):
     posts_data = {}
     posts_data['user'] = get_serialized_user_info(user, exclude=['bio', 'followers'])
     posts_list = []
-    for post in user.posts.all():
+    for post in user.posts.all().order_by('-updated_at'):
         posts_list.append(get_serialized_post(post, exclude_user=True))
     posts_data['posts'] = posts_list
     return posts_data
