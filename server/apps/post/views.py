@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.models import User
-from .models import Post
+from .models import Post, Like
 from apps.user.serializers import UserSerializer, UserInfoSerializer
 from .serializers import PostCreateSerializer, get_serialized_user_posts, LikeCreateSerializer
 
@@ -40,16 +40,16 @@ def likes_view(request, pk):
     try:
         requestingUser = request.user
         targetPost = Post.objects.get(id=pk)
-        data = {}
-        data['post'] = targetPost.id    #type:ignore
-        data['liker'] = requestingUser.id   #representative of the actual object since actual object not serializable directly
-        serializer = LikeCreateSerializer(data=data)    #Just send empty JSON #type:ignore
-        
-        if serializer.is_valid():
-            like = serializer.save()
-            return Response("Like created", status=201)
+
+        ##Since no request data so no need for a serializer
+
+        liked = Like.objects.filter(liker=requestingUser, post=targetPost)
+        if liked:      #If this user already liked this post
+            liked.delete()
+            return Response("Like Deleted", status=200)
         else:
-            return Response("Invalid Request", status=400)
+            Like.objects.create(post=targetPost, liker=requestingUser)
+            return Response("Like created", status=201)
     except Exception as ex:
         print_error()
         return Response("Something went wrong", status=500)
