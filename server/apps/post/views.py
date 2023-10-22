@@ -12,7 +12,7 @@ from collections import OrderedDict
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-## Retrieve own posts
+## Retrieve posts or Create Post
 def posts_view(request, pk):
     try:
         requestingUser = request.user
