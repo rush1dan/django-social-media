@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from .models import UserInfo
 from django.contrib.auth import authenticate
 from apps.user.serializers import UserCreateSerializer, UserSerializer
+from apps.post.serializers import get_serialized_user_posts
 from django.core.exceptions import ObjectDoesNotExist
 from .utils import is_following
 
@@ -81,13 +82,15 @@ def profile_view(request, pk):
     try:
         requestingUser = request.user
         if requestingUser.id == pk:   #user viewing own profile
-            return Response('Self', status=200)
+            serialized_posts_data = get_serialized_user_posts(requestingUser)
+            return Response(serialized_posts_data, status=200)
         else:   #not own profile
             targetUser = User.objects.get(id=pk)
             if is_following(requesting_user=requestingUser, target_user=targetUser):     #user following this profile's user
-                return Response('Following', status=200)
+                serialized_posts_data = get_serialized_user_posts(targetUser)
+                return Response(serialized_posts_data, status=200)
             else:   #user not following this profile's user
-                return Response('Not following', status=200)
+                return Response('Not following', status=403)
     except Exception as ex:
         print_error()
         return Response('Something went wrong', status=500)
