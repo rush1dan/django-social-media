@@ -49,7 +49,7 @@ export default function RegisterPage() {
         } catch (error: any) {
             console.log("Error creating user. ", error);
             if (error instanceof AxiosError) {      //or use error.name === 'AxiosError'
-                setErrorMsg(error.response?.data);
+                setErrorMsg(error.message);
                 setFetchState(FetchStatus.error);
             } else {
                 setErrorMsg(error.message);
