@@ -87,7 +87,7 @@ export default function LoginPage() {
         <div className='h-screen w-full'>
             <div className="-mt-10 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
+                    <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         Sign In
                     </h2>
                 </div>
@@ -95,7 +95,7 @@ export default function LoginPage() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" action="#" method="POST" onSubmit={(e) => handleSubmit(e)} ref={formRef}>
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                 UserName
                             </label>
                             <div className="mt-2">
@@ -112,7 +112,7 @@ export default function LoginPage() {
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                            <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                                 Password
                             </label>
                             <div className="mt-2">
