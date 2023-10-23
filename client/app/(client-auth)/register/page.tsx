@@ -90,7 +90,7 @@ export default function RegisterPage() {
         <div className='h-screen w-full'>
             <div className="-mt-10 flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                    <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
                         Create an account
                     </h2>
                 </div>
@@ -159,7 +159,7 @@ export default function RegisterPage() {
 
                     <p className="mt-10 text-center text-sm text-gray-500">
                         Already have an account?{' '}
-                        <Link href="/signin" className="font-semibold leading-6 text-blue-600 hover:text-blue-500">
+                        <Link href="/login" className="font-semibold leading-6 text-blue-600 hover:text-blue-500">
                             LogIn
                         </Link>
                     </p>
