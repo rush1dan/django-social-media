@@ -5,51 +5,45 @@ import { FetchStatus } from "@/lib/utils";
 import LoadingState from "@/components/LoadingState";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/hooks/userAuth";
 
+type SignInCredentials = {
+    username: string,
+    password: string
+}
 export default function LoginPage() {
-    //const { data: session, status } = useSession();
     const router = useRouter();
-    // useEffect(() => {
-    //     if (status === 'authenticated') {
-    //         router.push('/');
-    //     }
-    // }, [status]);
-
+    const { signIn, user, isAuthenticated } = useAuth();
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/entry');
+        }
+    });
+    
     const formRef = useRef<HTMLFormElement>(null);
-
-    const initialData = {
+    
+    const initialData: SignInCredentials = {
         username: '',
         password: ''
     }
-    const [data, setData] = useState(initialData);
+    const [data, setData] = useState<SignInCredentials>(initialData);
     const [fetchState, setFetchState] = useState(FetchStatus.none);
     const [errorMsg, setErrorMsg] = useState('');
-
-
-    // if (status === 'authenticated') {
-    //     return null;
-    // } else if (status === 'loading') {
-    //     return (
-    //         <div className="h-screen w-full flex flex-col items-center justify-center">
-    //             <LoadingState status={FetchStatus.pending} />
-    //         </div>
-    //     )
-    // }
-
+    
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
         setFetchState(FetchStatus.pending);
         try {
-            // const res = await signIn('credentials', { redirect: false, email: data.email, password: data.password });
-            // console.log(res);
-            // if (!res.error) {
-            //     setFetchState(FetchStatus.success);
-            //     router.push('/user');
-            // } else {
-            //     throw new Error(res.error);
-            // }
+            const signInResponse = await signIn({ username: data.username, password: data.password });
+            if (signInResponse.status === 200) {
+                console.log("Successfully logged in");
+                setFetchState(FetchStatus.success);
+            } else {
+                setErrorMsg(signInResponse.data.detail);
+                setFetchState(FetchStatus.error);
+            }
         } catch (error: any) {
-            console.log("Error creating user. ", error);
+            console.log("Error logging in user. ", error);
             setErrorMsg(error.message);
             setFetchState(FetchStatus.error);
         } finally {
@@ -58,7 +52,7 @@ export default function LoginPage() {
     }
 
     if (fetchState !== FetchStatus.none) {
-        if (fetchState == FetchStatus.pending) {
+        if (fetchState === FetchStatus.pending) {
             return (
                 <div className="h-screen w-full flex flex-col items-center justify-center">
                     <LoadingState className={''} status={FetchStatus.pending} />
@@ -66,7 +60,7 @@ export default function LoginPage() {
             )
         }
 
-        if (fetchState == FetchStatus.success) {
+        if (fetchState === FetchStatus.success) {
             return (
                 <div className="h-screen w-full flex flex-col items-center justify-center">
                     <LoadingState className={''} status={FetchStatus.success} />
@@ -74,7 +68,7 @@ export default function LoginPage() {
             )
         }
 
-        if (fetchState == FetchStatus.error) {
+        if (fetchState === FetchStatus.error) {
             return (
                 <div className="h-screen w-full flex flex-col items-center justify-center">
                     <LoadingState className={''} status={FetchStatus.error} msg={errorMsg} />
@@ -95,15 +89,15 @@ export default function LoginPage() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" action="#" method="POST" onSubmit={(e) => handleSubmit(e)} ref={formRef}>
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                                 UserName
                             </label>
                             <div className="mt-2">
                                 <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
+                                    id="username"
+                                    name="username"
+                                    type="text"
+                                    autoComplete="username"
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                                     onChange={(e) => setData({ ...data, username: e.target.value })}

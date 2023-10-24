@@ -70,10 +70,13 @@ def register_view(request):
 ## Send in the access token in the Authorization header of the request like Authorization: 'Bearer [access token]'
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def authentication_test_view(request):
-    user = request.user
-    serialized_user = UserSerializer(user)
-    return Response(serialized_user.data, status=200)
+def user_view(request):
+    try:
+        user = request.user
+        serialized_user = UserSerializer(user)
+        return Response(serialized_user.data, status=200)
+    except Exception as ex:
+        return Response("Something went wrong", status=500)
 
 
 @api_view(['GET'])
