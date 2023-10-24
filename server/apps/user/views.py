@@ -73,8 +73,8 @@ def register_view(request):
 def user_view(request):
     try:
         user = request.user
-        serialized_user = UserSerializer(user)
-        return Response(serialized_user.data, status=200)
+        serialized_user = get_serialized_user_info(user, exclude=['followers'])
+        return Response(serialized_user, status=200)
     except Exception as ex:
         return Response("Something went wrong", status=500)
 
