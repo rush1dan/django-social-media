@@ -10,10 +10,10 @@ export const Status = {
 type StatusProps = {
     className?: string,
     status: Number,
-    msg?: string
+    info?: string
 }
 
-const LoadingState = ({ className, status, msg } : StatusProps) => {
+const LoadingState = ({ className, status, info }: StatusProps) => {
     let statusIcon;
     let statusText;
     let textColorClass;
@@ -50,8 +50,8 @@ const LoadingState = ({ className, status, msg } : StatusProps) => {
                     <p className={`${textColorClass} font-semibold text-xl`}>{statusText}</p>
                 </div>
                 {
-                    msg &&
-                    <p className={`${textColorClass} font-semibold text-xl`}>{msg}</p>
+                    info &&
+                    <p className={`${textColorClass} font-semibold text-xl`}>{info}</p>
                 }
             </div>
         </div>
