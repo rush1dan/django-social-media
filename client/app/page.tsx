@@ -1,3 +1,4 @@
+import Feed from '@/components/HomePage/Feed'
 import InfoCard from '@/components/HomePage/InfoCard'
 import TopBar from '@/components/HomePage/TopBar'
 import ProtectedRoute from '@/components/ProtectedRoute'
@@ -17,7 +18,8 @@ export default function Home() {
 						<InfoCard />
 					</div>
 					{/* Feed */}
-					<div className='w-1/2 h-full bg-green-400'>
+					<div className='w-1/2 h-full bg-green-400 p-6'>
+						<Feed />
 					</div>
 					{/* Right SideBar */}
 					<div className='w-1/4 h-full bg-blue-400'>

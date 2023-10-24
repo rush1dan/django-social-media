@@ -86,7 +86,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                     }
                 });
                 if (response.status === 200) {
-                    setUser(response.data);
+                    setUser({ ...response.data, access_token: access_token});
                     router.push('/');
                 } else if (response.status === 401) {
                     if (refresh_token && refresh_token !== 'undefined') {
@@ -119,7 +119,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     }, []);
 
     return (
-        <AuthContext.Provider value={{ signIn, user, isAuthenticated  }}>
+        <AuthContext.Provider value={{ signIn, user, isAuthenticated,  }}>
             {children}
         </AuthContext.Provider>
     )
