@@ -11,5 +11,13 @@ class UserInfo(models.Model):
     bio = models.TextField(blank=True, null=True)
     followers = models.ManyToManyField('self', symmetrical=False, blank=True, null=True, related_name='following')
 
+    @property
+    def followed_users(self) -> list[User]:
+        return [userInfo.user for userInfo in self.following.all()] #type:ignore
+
+    @property
+    def follower_users(self) -> list[User]:
+        return [userInfo.user for userInfo in self.followers.all()] #type:ignore
+
     def __str__(self) -> str:
         return self.user.username

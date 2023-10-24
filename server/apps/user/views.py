@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import UserInfo
 from django.contrib.auth import authenticate
-from apps.user.serializers import UserCreateSerializer, UserSerializer
+from apps.user.serializers import UserCreateSerializer, UserSerializer, get_serialized_user_info
 from apps.post.serializers import get_serialized_user_posts
 from django.core.exceptions import ObjectDoesNotExist
 from .utils import is_following
@@ -117,3 +117,29 @@ def follow_view(request, pk):
     except Exception as ex:
         print_error()
         return Response('Something went wrong', status=500)
+    
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def following_view(request):
+    try:
+        requestingUser = request.user
+        followed_users = requestingUser.info.followed_users
+        serialized_data = [get_serialized_user_info(user, exclude=['bio', 'followers']) for user in followed_users]
+        return Response(serialized_data, status=200)
+    except Exception as ex:
+        print_error()
+        return Response("Something went wrong", status=500)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def followers_view(request):
+    try:
+        requestingUser = request.user
+        follower_users = requestingUser.info.follower_users
+        serialized_data = [get_serialized_user_info(user, exclude=['bio', 'followers']) for user in follower_users]
+        return Response(serialized_data, status=200)
+    except Exception as ex:
+        print_error()
+        return Response("Something went wrong", status=500)
