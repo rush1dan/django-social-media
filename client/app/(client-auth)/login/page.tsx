@@ -16,7 +16,7 @@ export default function LoginPage() {
     const { signIn, user, isAuthenticated } = useAuth();
     useEffect(() => {
         if (isAuthenticated) {
-            router.push('/entry');
+            router.push('/');
         }
     });
     

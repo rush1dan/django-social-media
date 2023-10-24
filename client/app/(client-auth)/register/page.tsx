@@ -45,7 +45,7 @@ export default function RegisterPage() {
             const res = await axios.post('/api/register', data);
             console.log(res.data);
             setFetchState(FetchStatus.success);
-            router.push('/signin');
+            router.push('/login');
         } catch (error: any) {
             console.log("Error creating user. ", error);
             if (error instanceof AxiosError) {      //or use error.name === 'AxiosError'

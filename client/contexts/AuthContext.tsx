@@ -87,7 +87,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                 });
                 if (response.status === 200) {
                     setUser(response.data);
-                    router.push('/entry');
+                    router.push('/');
                 } else if (response.status === 401) {
                     if (refresh_token && refresh_token !== 'undefined') {
                         if (await refreshAccessToken(refresh_token)) {
