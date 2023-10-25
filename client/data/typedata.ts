@@ -27,6 +27,6 @@ export type PostDataType = {
 export type FeedItemDataType = {
     user: UserDataType,
     post: PostDataType,
-    likes: Number,
-    comments: Number
+    likes: number,
+    comments: number
 }

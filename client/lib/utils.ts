@@ -5,4 +5,8 @@ const FetchStatus = {
     success: 1
 }
 
-export {FetchStatus}
+export { FetchStatus }
+
+export function apiPath(path: string) {
+    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`
+}
