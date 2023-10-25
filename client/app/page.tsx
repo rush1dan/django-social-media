@@ -18,7 +18,7 @@ export default function Home() {
 						<InfoCard />
 					</div>
 					{/* Feed */}
-					<div className='w-1/2 h-full bg-green-400 p-6'>
+					<div className='w-1/2 h-full bg-green-400 p-6 overflow-y-auto'>
 						<Feed />
 					</div>
 					{/* Right SideBar */}

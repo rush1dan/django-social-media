@@ -7,3 +7,26 @@ export type User = {
     bio?: string,
     image?: string
 }
+
+export type UserDataType = {
+    id: number,
+    username: string,
+    first_name: string,
+    last_name: string,
+    image?: string
+}
+
+export type PostDataType = {
+    id: number,
+    description: string,
+    created_at: string,
+    updated_at: string,
+    image?: string
+}
+
+export type FeedItemDataType = {
+    user: UserDataType,
+    post: PostDataType,
+    likes: Number,
+    comments: Number
+}

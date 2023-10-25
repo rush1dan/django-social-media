@@ -5,31 +5,10 @@ import LoadingWrapper from '../LoadingWrapper'
 import { FetchStatus } from '@/lib/utils'
 import axios from 'axios'
 import { useAuth } from '@/hooks/userAuth'
+import { FeedItemDataType } from '@/data/typedata'
+import PostCard from './PostCard'
 
 type Props = {}
-
-type UserDataType = {
-    id: number,
-    username: string,
-    first_name: string,
-    last_name: string,
-    image?: string
-}
-
-type PostDataType = {
-    id: number,
-    description: string,
-    created_at: string,
-    updated_at: string,
-    image?: string
-}
-
-type FeedItemDataType = {
-    user: UserDataType,
-    post: PostDataType,
-    likes: Number,
-    comments: Number
-}
 
 const Feed = (props: Props) => {
     const { user } = useAuth();
@@ -62,15 +41,14 @@ const Feed = (props: Props) => {
     }, []);
     return (
         <LoadingWrapper fetchState={fetchState} fetchInfo={fetchMsg}>
-            <div className='w-full h-full'>
-                {feedData?.map((data, index) => {
+            <div className='w-full h-full flex flex-col items-center justify-start gap-y-6'>
+                {
+                    feedData?.map((data, index) => {
                     return (
-                        <div className='' key={data.post.id}>
-                            <p>Post by {data.user.username}</p>
-                            <p>{ data.post.description}</p>
-                        </div>
+                        <PostCard feedItem={data} key={data.post.id} />
                     )
-                })}
+                    })
+                }
             </div>
         </LoadingWrapper>
     )
