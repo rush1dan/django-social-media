@@ -39,7 +39,7 @@ def posts_view(request, pk):
         targetUser = User.objects.get(id=pk)
         
         if is_following(requesting_user=requestingUser, target_user=targetUser) or requestingUser.id == pk:
-            serialized_posts_data = get_serialized_user_posts(targetUser)
+            serialized_posts_data = get_serialized_user_posts(requestingUser, targetUser)
             return Response(serialized_posts_data, status=200)
         else:
             return Response("Invalid Request", status=400)
@@ -59,7 +59,7 @@ def feed_view(request):
         relevantUsers.extend(followedUsers)
         relevantPosts = [post for post in Post.objects.filter(author__in=relevantUsers).order_by('-updated_at')]
         
-        serialized_posts = get_serialized_posts(relevantPosts)
+        serialized_posts = get_serialized_posts(requestingUser, relevantPosts)
         return Response(serialized_posts, status=200)
     except Exception as ex:
         print_error()

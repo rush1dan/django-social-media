@@ -85,12 +85,12 @@ def profile_view(request, pk):
     try:
         requestingUser = request.user
         if requestingUser.id == pk:   #user viewing own profile
-            serialized_posts_data = get_serialized_user_posts(requestingUser)
+            serialized_posts_data = get_serialized_user_posts(requestingUser, requestingUser)
             return Response(serialized_posts_data, status=200)
         else:   #not own profile
             targetUser = User.objects.get(id=pk)
             if is_following(requesting_user=requestingUser, target_user=targetUser):     #user following this profile's user
-                serialized_posts_data = get_serialized_user_posts(targetUser)
+                serialized_posts_data = get_serialized_user_posts(requestingUser, targetUser)
                 return Response(serialized_posts_data, status=200)
             else:   #user not following this profile's user
                 return Response('Not following', status=403)

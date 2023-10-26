@@ -9,10 +9,11 @@ import ActionLink from '../ActionLink'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const { user } = useAuth();
-    const [likeState, setLikeState] = useState<number>(FetchStatus.none);
+    const [likeLoadingState, setLikeLoadingState] = useState<number>(FetchStatus.none);
     const [likeCount, setLikeCount] = useState<number>(feedItem.likes);
+    const [likedState, setLikedState] = useState<boolean>(feedItem.liked);
     const like = useCallback(async () => {
-        setLikeState(FetchStatus.pending);
+        setLikeLoadingState(FetchStatus.pending);
         try {
             const response = await axios.post(apiPath(`likes/${feedItem.post.id}/`), { },{
                 headers: {
@@ -21,14 +22,16 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
             });
             if (response.status === 201) {
                 setLikeCount((current) => current + 1);
-                setLikeState(FetchStatus.success);
+                setLikeLoadingState(FetchStatus.success);
+                setLikedState(true);
             } else if (response.status === 200) {
                 setLikeCount((current) => current - 1);
-                setLikeState(FetchStatus.success);
+                setLikeLoadingState(FetchStatus.success);
+                setLikedState(false);
             }
         } catch (error: any) {
             console.log("Like error: ", error.message);
-            setLikeState(FetchStatus.error);
+            setLikeLoadingState(FetchStatus.error);
         }
     }, []);
 
@@ -66,7 +69,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 {/* Likes Link */}
                 <div className='flex flex-row items-center justify-center gap-x-2'>
                     <Image src='/like.svg' alt='' width={16} height={16} />
-                    <ActionLink isPending={likeState === FetchStatus.pending} onClick={() => console.log('likes')}>
+                    <ActionLink isPending={likeLoadingState === FetchStatus.pending} onClick={() => console.log('likes')}>
                         <p className='hover:underline'>Likes</p>
                     </ActionLink>
                     <p>{likeCount.toString()}</p>
@@ -85,10 +88,10 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
             <div className='bg-gray-800 w-full h-[1px]' />
             {/* Like Comment Share Buttons */}
             <div className='w-full px-2 flex flex-row items-center justify-around'>
-                <ActionButton isPending={likeState === FetchStatus.pending} onClick={(like)}>
+                <ActionButton isPending={likeLoadingState === FetchStatus.pending} onClick={(like)}>
                     <div className='w-40 h-10 flex flex-row items-center justify-center gap-x-2 hover:bg-slate-400/20 rounded-lg'>
                         <Image src='/like.svg' alt='' width={20} height={20} />
-                        <p className='font-bold text-xl'>Like</p>
+                        <p className={`font-bold text-xl ${likedState ? 'text-blue-500' : 'text-black'}`}>Like</p>
                     </div>
                 </ActionButton>
                 <button>
