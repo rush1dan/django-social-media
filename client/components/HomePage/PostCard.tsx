@@ -42,6 +42,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
 
     const commentFormRef = useRef<HTMLFormElement>(null);
     const [comment, setComment] = useState<string>('');
+    const [commentsCount, setCommentsCount] = useState<number>(feedItem.comments);
     const [userNewComments, setUserNewComments] = useState<string[]>([]);
 
     const handleCommentSubmit = async (e: React.FormEvent) => {
@@ -56,6 +57,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
             });
             if (response.status === 201) {
                 setUserNewComments((current: string[]) => [...current, comment]);
+                setCommentsCount(current => current + 1);
                 commentFormRef?.current?.reset();
             }
         } catch (error: any) {
@@ -103,7 +105,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                     <ActionLink isPending={false} onClick={() => console.log('likes')}>
                         <p className='hover:underline'>Comments</p>
                     </ActionLink>
-                    <p>{feedItem.comments.toString()}</p>
+                    <p>{commentsCount.toString()}</p>
                 </div>
             </div>
 
