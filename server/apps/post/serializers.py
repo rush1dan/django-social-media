@@ -46,7 +46,7 @@ def get_serialized_like(like):
 
 def get_serialized_post_likes(post):
     likes_data = []
-    for like in post.likes.all():
+    for like in post.likes.order_by('-created_at'):
         likes_data.append(get_serialized_like(like))
     return likes_data
 

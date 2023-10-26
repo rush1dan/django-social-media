@@ -38,6 +38,6 @@ def get_serialized_user_comment(comment):
 
 def get_serialized_user_comments(post):
     comments_data = []
-    for comment in post.comments.all():
+    for comment in post.comments.order_by('-updated_at'):
         comments_data.append(get_serialized_user_comment(comment))
     return comments_data
