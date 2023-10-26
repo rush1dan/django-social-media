@@ -91,7 +91,9 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 <ActionButton isPending={likeLoadingState === FetchStatus.pending} onClick={(like)}>
                     <div className='w-40 h-10 flex flex-row items-center justify-center gap-x-2 hover:bg-slate-400/20 rounded-lg'>
                         <Image src='/like.svg' alt='' width={20} height={20} />
-                        <p className={`font-bold text-xl ${likedState ? 'text-blue-500' : 'text-black'}`}>Like</p>
+                        <p className={`font-bold text-xl ${likedState ? 'text-blue-500' : 'text-black'}`}>
+                            {likedState ? 'Liked' : 'Like'}
+                        </p>
                     </div>
                 </ActionButton>
                 <button>
