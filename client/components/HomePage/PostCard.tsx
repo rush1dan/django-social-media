@@ -1,6 +1,6 @@
 import { FeedItemDataType } from '@/data/typedata'
 import Image from 'next/image'
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ActionButton from '../ActionButton'
 import axios from 'axios'
 import { FetchStatus, apiPath } from '@/lib/utils'
@@ -39,6 +39,29 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
             setLikeLoadingState(FetchStatus.error);
         }
     }, []);
+
+    const commentFormRef = useRef<HTMLFormElement>(null);
+    const [comment, setComment] = useState<string>('');
+    const [userNewComments, setUserNewComments] = useState<string[]>([]);
+
+    const handleCommentSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(apiPath(`comments/${feedItem.post.id}/`), {
+                text: comment
+            }, {
+                headers: {
+                    Authorization: `Bearer ${user?.access_token}`
+                }
+            });
+            if (response.status === 201) {
+                setUserNewComments((current: string[]) => [...current, comment]);
+                commentFormRef?.current?.reset();
+            }
+        } catch (error: any) {
+
+        }
+    }
 
     return (
         <div className='w-full h-fit bg-slate-50 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
@@ -109,6 +132,35 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 </ActionButton>
             </div>
             <div className='bg-gray-800 w-full h-[1px]' />
+
+            {/* User Comments */}
+            {
+                userNewComments &&
+                <div className='w-full'>
+                    {
+                        userNewComments.map((com, index) => {
+                            return (
+                                <div className='bg-slate-200 w-full rounded-full' key={index}>
+
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            }
+
+            {/* Comment Box */}
+            <div className='w-full'>
+                <form onSubmit={handleCommentSubmit} ref={commentFormRef} className='relative'>
+                    <input type="text" className='w-full rounded-full h-fit text-left pr-16' required onChange={e => setComment(e.target.value)}
+                        placeholder='Write a comment...' />
+                    <button type='submit' className='absolute h-full aspect-square p-2 top-1/2 -translate-y-1/2 right-4'>
+                        <div className='w-full h-full relative'>
+                            <Image src='share.svg' alt='' fill />
+                        </div>
+                    </button>
+                </form>
+            </div>
 
             {/* Likes Modal */}
             {

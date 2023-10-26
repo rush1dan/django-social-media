@@ -14,7 +14,7 @@ const Feed = (props: Props) => {
     const { user } = useAuth();
     const [fetchState, setFetchState] = useState<number>(0);
     const [fetchMsg, setFetchMsg] = useState<string>('');
-    const [feedData, setFeedData] = useState<[FeedItemDataType]>();
+    const [feedData, setFeedData] = useState<FeedItemDataType[]>();
     const fetchData = useCallback(async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/feed/`, {
