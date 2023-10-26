@@ -26,7 +26,6 @@ const Feed = (props: Props) => {
                 setFetchState(FetchStatus.success);
                 setFetchMsg(response.statusText);
                 setFeedData(response.data);
-                console.log(response.data);
             } else {
                 setFetchState(FetchStatus.error);
                 setFetchMsg(response.statusText);

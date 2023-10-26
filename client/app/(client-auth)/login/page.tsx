@@ -71,7 +71,7 @@ export default function LoginPage() {
         if (fetchState === FetchStatus.error) {
             return (
                 <div className="h-screen w-full flex flex-col items-center justify-center">
-                    <LoadingState className={''} status={FetchStatus.error} msg={errorMsg} />
+                    <LoadingState className={''} status={FetchStatus.error} info={errorMsg} />
                 </div>
             )
         }

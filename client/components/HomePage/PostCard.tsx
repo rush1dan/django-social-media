@@ -6,16 +6,21 @@ import axios from 'axios'
 import { FetchStatus, apiPath } from '@/lib/utils'
 import { useAuth } from '@/hooks/userAuth'
 import ActionLink from '../ActionLink'
+import UserInfo from '../UserInfo'
+import Popup from '../Popup'
+import LikesModal from '../LikesModal'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const { user } = useAuth();
     const [likeLoadingState, setLikeLoadingState] = useState<number>(FetchStatus.none);
     const [likeCount, setLikeCount] = useState<number>(feedItem.likes);
     const [likedState, setLikedState] = useState<boolean>(feedItem.liked);
+    const [likesModalOpened, setLikesModalOpened] = useState<boolean>(false);
+
     const like = useCallback(async () => {
         setLikeLoadingState(FetchStatus.pending);
         try {
-            const response = await axios.post(apiPath(`likes/${feedItem.post.id}/`), { },{
+            const response = await axios.post(apiPath(`likes/${feedItem.post.id}/`), {}, {
                 headers: {
                     Authorization: `Bearer ${user?.access_token}`
                 }
@@ -38,15 +43,9 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     return (
         <div className='w-full h-fit bg-slate-50 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
             {/* User Info */}
-            <div className='flex flex-row justify-center items-center gap-x-4'>
-                <div className='w-12 h-12 rounded-full relative bg-slate-400'>
-                    <Image src={feedItem.user.image ?? '/placeholder_image.svg'} alt='' fill />
-                </div>
-                <div className='flex flex-col items-start justify-center'>
-                    <p className='text-base font-semibold'>{feedItem.user.first_name} {feedItem.user.last_name}</p>
-                    <p className='text-sm font-semibold text-gray-600'>@{feedItem.user.username}</p>
-                </div>
-            </div>
+            <UserInfo id={feedItem.user.id} username={feedItem.user.username}
+                first_name={feedItem.user.first_name} last_name={feedItem.user.last_name}
+                image={feedItem.user.image} />
 
             {/* Description */}
             {
@@ -69,7 +68,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 {/* Likes Link */}
                 <div className='flex flex-row items-center justify-center gap-x-2'>
                     <Image src='/like.svg' alt='' width={16} height={16} />
-                    <ActionLink isPending={likeLoadingState === FetchStatus.pending} onClick={() => console.log('likes')}>
+                    <ActionLink isPending={likeLoadingState === FetchStatus.pending} onClick={() => setLikesModalOpened(true)}>
                         <p className='hover:underline'>Likes</p>
                     </ActionLink>
                     <p>{likeCount.toString()}</p>
@@ -110,6 +109,15 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 </ActionButton>
             </div>
             <div className='bg-gray-800 w-full h-[1px]' />
+
+            {/* Likes Modal */}
+            {
+                likesModalOpened &&
+                <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] p-12 rounded-lg bg-slate-50'
+                    crossSizeClass='w-6 h-6' crossOffsetClass='top-8 right-8' hidden={!likesModalOpened} onClosed={() => setLikesModalOpened(false)}>
+                    <LikesModal postId={feedItem.post.id} opened={likesModalOpened} />
+                </Popup>
+            }
         </div>
     )
 }
