@@ -40,7 +40,7 @@ const Feed = (props: Props) => {
     }, []);
     return (
         <LoadingWrapper fetchState={fetchState} fetchInfo={fetchMsg}>
-            <div className='w-full h-full flex flex-col items-center justify-start gap-y-6'>
+            <div className='w-full min-h-full flex flex-col items-center justify-start gap-y-6'>
                 {
                     feedData?.map((data, index) => {
                     return (

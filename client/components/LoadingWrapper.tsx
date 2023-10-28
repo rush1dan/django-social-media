@@ -20,9 +20,9 @@ const LoadingWrapper = ({ children, fetchState, fetchInfo, loadImmediatelyOnSucc
         )
     }
     return (
-        <div>
+        <>
             {children}
-        </div>
+        </>
     )
 }
 
