@@ -12,6 +12,8 @@ import LikesModal from '../LikesModal'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const { user } = useAuth();
+
+    // Like Management:
     const [likeLoadingState, setLikeLoadingState] = useState<number>(FetchStatus.none);
     const [likeCount, setLikeCount] = useState<number>(feedItem.likes);
     const [likedState, setLikedState] = useState<boolean>(feedItem.liked);
@@ -40,13 +42,20 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
         }
     }, []);
 
+
+    // Comment managment:
     const commentFormRef = useRef<HTMLFormElement>(null);
+    const [commentLoadingState, setcommentLoadingState] = useState<number>(FetchStatus.none);
     const [comment, setComment] = useState<string>('');
     const [commentsCount, setCommentsCount] = useState<number>(feedItem.comments);
     const [userNewComments, setUserNewComments] = useState<string[]>([]);
 
+    const [postModalOpened, setPostModalOpened] = useState<boolean>(false);
+
     const handleCommentSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setcommentLoadingState(FetchStatus.pending);
+
         try {
             const response = await axios.post(apiPath(`comments/${feedItem.post.id}/`), {
                 text: comment
@@ -59,9 +68,11 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 setUserNewComments((current: string[]) => [...current, comment]);
                 setCommentsCount(current => current + 1);
                 commentFormRef?.current?.reset();
+                setcommentLoadingState(FetchStatus.success);
             }
         } catch (error: any) {
-
+            console.log("Comment error: ", error.message);
+            setcommentLoadingState(FetchStatus.error);
         }
     }
 
@@ -102,7 +113,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 {/* Comments Link */}
                 <div className='flex flex-row items-center justify-center gap-x-2'>
                     <Image src='/comment.svg' alt='' width={16} height={16} />
-                    <ActionLink isPending={false} onClick={() => console.log('likes')}>
+                    <ActionLink isPending={commentLoadingState === FetchStatus.pending} onClick={() => setPostModalOpened(true)}>
                         <p className='hover:underline'>Comments</p>
                     </ActionLink>
                     <p>{commentsCount.toString()}</p>
@@ -143,7 +154,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                         userNewComments.map((com, index) => {
                             return (
                                 <div className='bg-slate-200 w-full rounded-full' key={index}>
-
+                                    Goku
                                 </div>
                             )
                         })
@@ -156,11 +167,13 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 <form onSubmit={handleCommentSubmit} ref={commentFormRef} className='relative'>
                     <input type="text" className='w-full rounded-full h-fit text-left pr-16' required onChange={e => setComment(e.target.value)}
                         placeholder='Write a comment...' />
-                    <button type='submit' className='absolute h-full aspect-square p-2 top-1/2 -translate-y-1/2 right-4'>
-                        <div className='w-full h-full relative'>
-                            <Image src='share.svg' alt='' fill />
+                    <ActionButton buttonType='submit' isPending={commentLoadingState === FetchStatus.pending}>
+                        <div className='absolute h-full aspect-square p-2 top-1/2 -translate-y-1/2 right-4'>
+                            <div className='w-full h-full relative'>
+                                <Image src='share.svg' alt='' fill />
+                            </div>
                         </div>
-                    </button>
+                    </ActionButton>
                 </form>
             </div>
 
@@ -170,6 +183,15 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] p-12 rounded-lg bg-slate-50'
                     crossSizeClass='w-6 h-6' crossOffsetClass='top-8 right-8' hidden={!likesModalOpened} onClosed={() => setLikesModalOpened(false)}>
                     <LikesModal postId={feedItem.post.id} opened={likesModalOpened} />
+                </Popup>
+            }
+
+            {/* Focused Post Modal */} 
+            {
+                postModalOpened &&
+                <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] p-12 rounded-lg bg-slate-50'
+                    crossSizeClass='w-6 h-6' crossOffsetClass='top-8 right-8' hidden={!postModalOpened} onClosed={() => setPostModalOpened(false)}>
+                    Post Modal
                 </Popup>
             }
         </div>

@@ -1,16 +1,16 @@
-import { FetchStatus } from '@/lib/utils'
 import React from 'react'
 
 type Props = {
     children: React.ReactNode,
     isPending: boolean,
-    onClick: React.MouseEventHandler | undefined,
+    buttonType?: 'button' | 'submit'| 'reset' | undefined,
+    onClick?: React.MouseEventHandler | undefined,
     isRestricted?: boolean
 }
 
-const ActionButton = ({children, isPending, onClick, isRestricted = false}: Props) => {
+const ActionButton = ({children, buttonType='button', isPending, onClick, isRestricted = false}: Props) => {
     return (
-        <button type='button' onClick={onClick} disabled={isPending || isRestricted} className={`${isPending ? 'opacity-25' : ''} ${isRestricted ? 'cursor-not-allowed' : ''}`}>
+        <button type={buttonType} onClick={onClick} disabled={isPending || isRestricted} className={`${isPending ? 'opacity-25' : ''} ${isRestricted ? 'cursor-not-allowed' : ''}`}>
             {children}
         </button>
     )
