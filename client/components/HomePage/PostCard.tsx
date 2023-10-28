@@ -9,6 +9,7 @@ import ActionLink from '../ActionLink'
 import UserInfo from '../UserInfo'
 import Popup from '../Popup'
 import LikesModal from '../LikesModal'
+import CommentsModal from '../CommentsModal'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const { user } = useAuth();
@@ -49,8 +50,8 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const [comment, setComment] = useState<string>('');
     const [commentsCount, setCommentsCount] = useState<number>(feedItem.comments);
     const [userNewComments, setUserNewComments] = useState<string[]>([]);
+    const [commentsModalOpened, setCommentsModalOpened] = useState<boolean>(false);
 
-    const [postModalOpened, setPostModalOpened] = useState<boolean>(false);
 
     const handleCommentSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -113,7 +114,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 {/* Comments Link */}
                 <div className='flex flex-row items-center justify-center gap-x-2'>
                     <Image src='/comment.svg' alt='' width={16} height={16} />
-                    <ActionLink isPending={commentLoadingState === FetchStatus.pending} onClick={() => setPostModalOpened(true)}>
+                    <ActionLink isPending={commentLoadingState === FetchStatus.pending} onClick={() => setCommentsModalOpened(true)}>
                         <p className='hover:underline'>Comments</p>
                     </ActionLink>
                     <p>{commentsCount.toString()}</p>
@@ -180,18 +181,20 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
             {/* Likes Modal */}
             {
                 likesModalOpened &&
-                <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] p-12 rounded-lg bg-slate-50'
-                    crossSizeClass='w-6 h-6' crossOffsetClass='top-8 right-8' hidden={!likesModalOpened} onClosed={() => setLikesModalOpened(false)}>
+                <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] pt-16 rounded-lg bg-slate-50 overflow-clip'
+                        hidden={!likesModalOpened} onClosed={() => setLikesModalOpened(false)}
+                        popUpHeader='Likes'>
                     <LikesModal postId={feedItem.post.id} opened={likesModalOpened} />
                 </Popup>
             }
 
             {/* Focused Post Modal */} 
             {
-                postModalOpened &&
-                <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] p-12 rounded-lg bg-slate-50'
-                    crossSizeClass='w-6 h-6' crossOffsetClass='top-8 right-8' hidden={!postModalOpened} onClosed={() => setPostModalOpened(false)}>
-                    Post Modal
+                commentsModalOpened &&
+                <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[32rem] pt-16 rounded-lg bg-slate-50 overflow-clip'
+                        hidden={!commentsModalOpened} onClosed={() => setCommentsModalOpened(false)}
+                        popUpHeader='Comments'>
+                    <CommentsModal postId={feedItem.post.id} opened={commentsModalOpened} />
                 </Popup>
             }
         </div>

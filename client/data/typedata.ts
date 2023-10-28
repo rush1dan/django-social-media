@@ -31,3 +31,14 @@ export type FeedItemDataType = {
     comments: number,
     liked: boolean
 }
+
+export type CommentDataType = {
+    id: number,
+    text: string,
+    updated_at: string
+}
+
+export type UserCommentType = {
+    user: UserDataType,
+    comment: CommentDataType
+}

@@ -1,58 +1,58 @@
-import { UserDataType } from '@/data/typedata'
+import { UserCommentType } from '@/data/typedata'
 import { useAuth } from '@/hooks/userAuth'
 import { FetchStatus, apiPath } from '@/lib/utils'
 import axios from 'axios'
 import React, {useState, useCallback, useEffect} from 'react'
 import LoadingWrapper from './LoadingWrapper'
 import UserInfo from './UserInfo'
+import CommentCard from './CommentCard'
 
 type Props = {
     postId: number, 
     opened: boolean
 }
 
-type LikedUser = {
-    user: UserDataType
-}
 
-const LikesModal = ({ postId, opened }: Props) => {
+
+const CommentsModal = ({ postId, opened }: Props) => {
     const { user } = useAuth();
     const [fetchState, setFetchState] = useState<number>(FetchStatus.pending);
-    const [likedUsers, setLikedUsers] = useState<LikedUser[] | null>(null);
+    const [userComments, setComments] = useState<UserCommentType[] | null>(null);
 
-    const fetchLikers = useCallback(async () => {
+    const fetchComments = useCallback(async () => {
         try {
-            const response = await axios.get(apiPath(`likes/${postId}/`), {
+            const response = await axios.get(apiPath(`comments/${postId}/`), {
                 headers: {
                     Authorization: `Bearer ${user?.access_token}`
                 }
             });
             if (response.status === 200) {
-                setLikedUsers(response.data);
+                console.log(response.data);
+                setComments(response.data);
                 setFetchState(FetchStatus.success);
             }
         } catch (error: any) {
-            setLikedUsers(null);
+            setComments(null);
             setFetchState(FetchStatus.error);
         }
     }, []);
 
     useEffect(() => {
         if (opened) {
-            fetchLikers();
+            fetchComments();
         }
     }, [opened])
     
 
     return (
         <LoadingWrapper fetchState={fetchState}>
-            <div className='w-full h-full flex flex-col items-start justify-start gap-y-4 p-6 overflow-y-auto'>
+            <div className='w-full h-full flex flex-col items-start justify-start gap-y-4 px-6 py-2 overflow-y-auto'>
                 { 
-                    likedUsers?.map((likedUser, index) => {
+                    userComments?.map((userComment, index) => {
                         return (
-                            <UserInfo id={likedUser.user.id} username={likedUser.user.username}
-                                first_name={likedUser.user.first_name} last_name={likedUser.user.last_name}
-                                image={likedUser.user.image} key={likedUser.user.id} />
+                            <div className='w-full' key={userComment?.comment.id}>
+                                <CommentCard userComment={userComment} />
+                            </div>
                         )
                     })
                 }
@@ -61,4 +61,4 @@ const LikesModal = ({ postId, opened }: Props) => {
     )
 }
 
-export default LikesModal
+export default CommentsModal
