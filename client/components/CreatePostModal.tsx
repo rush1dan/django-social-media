@@ -2,7 +2,8 @@ import { User } from '@/data/typedata'
 import React, { ReactEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
-import { apiPath } from '@/lib/utils'
+import { FetchStatus, apiPath } from '@/lib/utils'
+import ActionButton from './ActionButton'
 
 type Props = {
     user?: User
@@ -22,13 +23,18 @@ const CreatePostModal = ({ user }: Props) => {
         postArea?.addEventListener("input", autoResize);
     }, [])
 
+    const [postingState, setPostingState] = useState<number>(FetchStatus.none);
+
     const [postDescription, setPostDescription] = useState<string>('');
 
     const [inputImage, setInputImage] = useState<File | null>(null);
     const [inputImageSrc, setInputImageSrc] = useState<string | null>(null);
 
+    const postFormRef = useRef<HTMLFormElement>(null);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setPostingState(FetchStatus.pending);
 
         const formData = new FormData();
         formData.append('description', postDescription);
@@ -45,9 +51,14 @@ const CreatePostModal = ({ user }: Props) => {
             })
             if (response.status === 201) {
                 console.log(response.data);
+                setPostingState(FetchStatus.success);
+                postFormRef.current?.reset();
+                setInputImage(null);
+                setInputImageSrc(null);
             }
         } catch (error: any) {
-            
+            console.log("Post creationg error: ", error.message);
+            setPostingState(FetchStatus.error);
         }
     }
 
@@ -63,7 +74,7 @@ const CreatePostModal = ({ user }: Props) => {
     return (
         <div className='w-full h-full p-6 overflow-y-auto'>
             <div className='w-full h-full'>
-                <form onSubmit={e => handleSubmit(e)} className='w-full min-h-full pb-16'>
+                <form onSubmit={e => handleSubmit(e)} className='w-full min-h-full pb-16' ref={postFormRef}>
 
                     <div className='flex flex-row items-center justify-start gap-x-2 mb-2'>
                         <div className='flex-none w-12 h-12 rounded-full relative bg-slate-500'>
@@ -94,7 +105,10 @@ const CreatePostModal = ({ user }: Props) => {
                         </label>
                     </div>
 
-                    <button type='submit' className='w-3/4 h-10 absolute bottom-4 left-1/2 -translate-x-1/2 bg-blue-500 hover:bg-blue-600 rounded-lg'>Post</button>
+                    <ActionButton buttonType='submit' isPending={postingState === FetchStatus.pending}
+                        className='w-3/4 h-10 absolute bottom-4 left-1/2 -translate-x-1/2 bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-semibold'>
+                        Post
+                    </ActionButton>
                 </form>
             </div>
         </div>
