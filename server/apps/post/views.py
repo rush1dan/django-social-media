@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from apps.user.models import UserInfo
 from .models import Post, Like
 from apps.user.serializers import UserSerializer, UserInfoSerializer
-from .serializers import PostCreateSerializer, get_serialized_user_posts, get_serialized_posts, get_serialized_post_likes, LikeCreateSerializer
+from .serializers import PostCreateSerializer, get_serialized_user_posts, get_serialized_posts, get_serialized_post_likes, get_serialized_post
 
 from apps.user.utils import is_following
 from traceback import print_exc as print_error
@@ -21,7 +21,7 @@ def post_create_view(request):
         serializer = PostCreateSerializer(data=request.data)
         if serializer.is_valid():  
             post = serializer.save(user_id=requestingUser.id)
-            return Response("Post created", status=201)
+            return Response(get_serialized_post(requestingUser, post), status=201)
         else:
             return Response("Invalid Request", status=400)
 
