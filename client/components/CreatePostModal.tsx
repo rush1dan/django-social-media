@@ -1,6 +1,8 @@
 import { User } from '@/data/typedata'
 import React, { ReactEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
+import axios from 'axios'
+import { apiPath } from '@/lib/utils'
 
 type Props = {
     user?: User
@@ -20,11 +22,33 @@ const CreatePostModal = ({ user }: Props) => {
         postArea?.addEventListener("input", autoResize);
     }, [])
 
+    const [postDescription, setPostDescription] = useState<string>('');
+
     const [inputImage, setInputImage] = useState<File | null>(null);
     const [inputImageSrc, setInputImageSrc] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('description', postDescription);
+        if (inputImage) {
+            formData.append('image', inputImage);
+        }
+
+        try {
+            const response = await axios.post(apiPath(`posts/`), formData, {
+                headers: {
+                    Authorization: `Bearer ${user?.access_token}`,
+                    "Content-Type": "multipart/form-data"
+                },
+            })
+            if (response.status === 201) {
+                console.log(response.data);
+            }
+        } catch (error: any) {
+            
+        }
     }
 
     const handleImageSelection = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +73,7 @@ const CreatePostModal = ({ user }: Props) => {
                     </div>
 
                     <textarea className='w-full mb-4 overflow-hidden rounded-lg bg-slate-100/10 resize-none text-base' name="create_post" id="create_post" rows={1}
-                        placeholder={`What's on your mind, ${user?.first_name}?`}>
+                        placeholder={`What's on your mind, ${user?.first_name}?`} required onChange={e => setPostDescription(e.target.value)}>
 
                     </textarea>
 
