@@ -11,6 +11,7 @@ import Popup from '../Popup'
 import LikesModal from '../LikesModal'
 import CommentsModal from '../CommentsModal'
 import CommentCard from '../CommentCard'
+import CommentBox from '../CommentBox'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const { user } = useAuth();
@@ -46,37 +47,11 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
 
 
     // Comment managment:
-    const commentFormRef = useRef<HTMLFormElement>(null);
     const [commentLoadingState, setcommentLoadingState] = useState<number>(FetchStatus.none);
-    const [comment, setComment] = useState<string>('');
     const [commentsCount, setCommentsCount] = useState<number>(feedItem.comments);
     const [latestComment, setLatestComment] = useState<UserCommentType | null>(feedItem.latest_comment);
     const [commentsModalOpened, setCommentsModalOpened] = useState<boolean>(false);
 
-
-    const handleCommentSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setcommentLoadingState(FetchStatus.pending);
-
-        try {
-            const response = await axios.post(apiPath(`comments/${feedItem.post.id}/`), {
-                text: comment
-            }, {
-                headers: {
-                    Authorization: `Bearer ${user?.access_token}`
-                }
-            });
-            if (response.status === 201) {
-                setLatestComment(response.data);
-                setCommentsCount(current => current + 1);
-                commentFormRef?.current?.reset();
-                setcommentLoadingState(FetchStatus.success);
-            }
-        } catch (error: any) {
-            console.log("Comment error: ", error.message);
-            setcommentLoadingState(FetchStatus.error);
-        }
-    }
 
     return (
         <div className='w-full h-fit bg-slate-50 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
@@ -156,17 +131,8 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
 
             {/* Comment Box */}
             <div className='w-full'>
-                <form onSubmit={handleCommentSubmit} ref={commentFormRef} className='relative'>
-                    <input type="text" className='w-full rounded-full h-fit text-left pr-16' required onChange={e => setComment(e.target.value)}
-                        placeholder='Write a comment...' />
-                    <ActionButton buttonType='submit' isPending={commentLoadingState === FetchStatus.pending}>
-                        <div className='absolute h-full aspect-square p-2 top-1/2 -translate-y-1/2 right-4'>
-                            <div className='w-full h-full relative'>
-                                <Image src='share.svg' alt='' fill />
-                            </div>
-                        </div>
-                    </ActionButton>
-                </form>
+                <CommentBox user={user} post_id={feedItem.post.id} commentLoadingState={commentLoadingState}
+                    setCommentLoadingState={setcommentLoadingState} setCommentsCount={setCommentsCount} setLatestComment={setLatestComment} />
             </div>
 
             {/* Likes Modal */}
