@@ -45,7 +45,7 @@ const Feed = (props: Props) => {
     const [postModalOpened, setPostModalOpened] = useState<boolean>(false);
 
     return (
-        <div className='w-full h-full'>
+        <div className='w-full min-h-full'>
             {/* Create Post */}
             <div className='w-full h-fit p-2 bg-slate-50 mb-6 rounded-lg'>
                 <div className='flex flex-row items-center justify-start gap-x-2 mb-2'>
