@@ -2,7 +2,7 @@ from rest_framework import serializers
 from apps.post.models import Post
 from .models import Comment
 from django.contrib.auth.models import User
-from apps.user.serializers import UserSerializer, get_serialized_user_info
+from apps.user.serializers import get_serialized_user_info
 
 ## For creating post
 class CommentCreateSerializer(serializers.ModelSerializer): 
@@ -41,3 +41,10 @@ def get_serialized_user_comments(post):
     for comment in post.comments.order_by('-updated_at'):
         comments_data.append(get_serialized_user_comment(comment))
     return comments_data
+
+def get_serialized_latest_comment(post):
+    try:
+        latest_comment = post.comments.order_by('-updated_at').first()
+        return get_serialized_user_comment(latest_comment) if latest_comment != None else None
+    except Exception as ex:
+        return None

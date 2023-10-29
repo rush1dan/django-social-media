@@ -1,5 +1,6 @@
 export type User = {
     access_token: string,
+    id: number,
     username: string,
     email: string,
     first_name: string,
@@ -29,7 +30,8 @@ export type FeedItemDataType = {
     post: PostDataType,
     likes: number,
     comments: number,
-    liked: boolean
+    liked: boolean,
+    latest_comment: UserCommentType
 }
 
 export type CommentDataType = {

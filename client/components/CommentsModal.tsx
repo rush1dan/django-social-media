@@ -27,7 +27,6 @@ const CommentsModal = ({ postId, opened }: Props) => {
                 }
             });
             if (response.status === 200) {
-                console.log(response.data);
                 setComments(response.data);
                 setFetchState(FetchStatus.success);
             }

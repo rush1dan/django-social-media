@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from apps.post.models import Post
 from apps.comment.models import Comment
-from apps.comment.serializers import CommentCreateSerializer, get_serialized_user_comments
+from apps.comment.serializers import CommentCreateSerializer, get_serialized_user_comments, get_serialized_user_comment
 
 from traceback import print_exc as print_error
 
@@ -23,7 +23,7 @@ def comments_view(request, pk):
             serializer = CommentCreateSerializer(data=request.data)
             if serializer.is_valid():  
                 comment = serializer.save(user_id=requestingUser.id, post_id=pk)
-                return Response("Comment created", status=201)
+                return Response(get_serialized_user_comment(comment), status=201)
             else:
                 return Response("Invalid request", status=400)
         else:

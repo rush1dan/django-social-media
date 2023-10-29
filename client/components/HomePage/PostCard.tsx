@@ -1,4 +1,4 @@
-import { FeedItemDataType } from '@/data/typedata'
+import { FeedItemDataType, UserCommentType } from '@/data/typedata'
 import Image from 'next/image'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ActionButton from '../ActionButton'
@@ -10,6 +10,7 @@ import UserInfo from '../UserInfo'
 import Popup from '../Popup'
 import LikesModal from '../LikesModal'
 import CommentsModal from '../CommentsModal'
+import CommentCard from '../CommentCard'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const { user } = useAuth();
@@ -49,7 +50,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const [commentLoadingState, setcommentLoadingState] = useState<number>(FetchStatus.none);
     const [comment, setComment] = useState<string>('');
     const [commentsCount, setCommentsCount] = useState<number>(feedItem.comments);
-    const [userNewComments, setUserNewComments] = useState<string[]>([]);
+    const [latestComment, setLatestComment] = useState<UserCommentType | null>(feedItem.latest_comment);
     const [commentsModalOpened, setCommentsModalOpened] = useState<boolean>(false);
 
 
@@ -66,7 +67,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
                 }
             });
             if (response.status === 201) {
-                setUserNewComments((current: string[]) => [...current, comment]);
+                setLatestComment(response.data);
                 setCommentsCount(current => current + 1);
                 commentFormRef?.current?.reset();
                 setcommentLoadingState(FetchStatus.success);
@@ -147,20 +148,10 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
             </div>
             <div className='bg-gray-800 w-full h-[1px]' />
 
-            {/* User Comments */}
+            {/* Latest Comment */}
             {
-                userNewComments &&
-                <div className='w-full'>
-                    {
-                        userNewComments.map((com, index) => {
-                            return (
-                                <div className='bg-slate-200 w-full rounded-full' key={index}>
-                                    Goku
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+                latestComment &&
+                <CommentCard userComment={latestComment} />
             }
 
             {/* Comment Box */}

@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Post, Like
 from django.contrib.auth.models import User
 from apps.user.serializers import UserSerializer, get_serialized_user_info
-from apps.comment.serializers import get_serialized_user_comments
+from apps.comment.serializers import get_serialized_latest_comment
 
 ## For creating post
 class PostCreateSerializer(serializers.ModelSerializer): 
@@ -63,7 +63,8 @@ def get_serialized_post(requestingUser, post, exclude_user=False):
     #final_serialized_data['likes'] = get_serialized_post_likes(post)       ##fetch likes later when clicked
     #final_serialized_data['comments'] = get_serialized_user_comments(post)     ##fetch comments later when clicked
 
-    final_serialized_data['liked'] = True if post.likes.filter(liker=requestingUser) else False     
+    final_serialized_data['liked'] = True if post.likes.filter(liker=requestingUser) else False
+    final_serialized_data['latest_comment'] = get_serialized_latest_comment(post)     
 
     return final_serialized_data
 
