@@ -3,15 +3,15 @@ import Image from 'next/image'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ActionButton from '../ActionButton'
 import axios from 'axios'
-import { FetchStatus, apiPath, getMediaURLFromApiBackend } from '@/lib/utils'
+import { FetchStatus, apiPath, formatRelativeTime, getMediaURLFromApiBackend } from '@/lib/utils'
 import { useAuth } from '@/hooks/userAuth'
 import ActionLink from '../ActionLink'
-import UserInfo from '../UserInfo'
 import Popup from '../Popup'
 import LikesModal from '../LikesModal'
 import CommentsModal from '../CommentsModal'
 import CommentCard from '../CommentCard'
 import CommentBox from '../CommentBox'
+import Link from 'next/link'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const { user } = useAuth();
@@ -55,9 +55,15 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     return (
         <div className='w-full h-fit bg-slate-50 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
             {/* User Info */}
-            <UserInfo id={feedItem.user.id} username={feedItem.user.username}
-                first_name={feedItem.user.first_name} last_name={feedItem.user.last_name}
-                image={feedItem.user.image} />
+            <Link href={`/profile/${feedItem.user.id}/`} className='flex flex-row justify-center items-center gap-x-2'>
+                <div className='w-12 h-12 rounded-full relative bg-slate-400'>
+                    <Image src={feedItem.user.image ?? '/placeholder_image.svg'} alt='' fill />
+                </div>
+                <div className='flex flex-col items-start justify-center'>
+                    <p className='text-base font-semibold'>{feedItem.user.first_name} {feedItem.user.last_name}</p>
+                    <p className='font-medium text-sm text-gray-400'>{formatRelativeTime(feedItem.post.updated_at)}</p>
+                </div>
+            </Link>
 
             {/* Description */}
             {

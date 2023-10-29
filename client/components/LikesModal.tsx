@@ -2,12 +2,13 @@ import { UserDataType } from '@/data/typedata'
 import { useAuth } from '@/hooks/userAuth'
 import { FetchStatus, apiPath } from '@/lib/utils'
 import axios from 'axios'
-import React, {useState, useCallback, useEffect} from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import LoadingWrapper from './LoadingWrapper'
-import UserInfo from './UserInfo'
+import Image from 'next/image'
+import Link from 'next/link'
 
 type Props = {
-    postId: number, 
+    postId: number,
     opened: boolean
 }
 
@@ -42,17 +43,24 @@ const LikesModal = ({ postId, opened }: Props) => {
             fetchLikers();
         }
     }, [opened])
-    
+
 
     return (
         <LoadingWrapper fetchState={fetchState}>
             <div className='w-full h-full flex flex-col items-start justify-start gap-y-4 p-6 overflow-y-auto'>
-                { 
+                {
                     likedUsers?.map((likedUser, index) => {
                         return (
-                            <UserInfo id={likedUser.user.id} username={likedUser.user.username}
-                                first_name={likedUser.user.first_name} last_name={likedUser.user.last_name}
-                                image={likedUser.user.image} key={likedUser.user.id} />
+                            <Link href={`/profile/${likedUser.user.id}/`} key={likedUser.user.id}>
+                                <div className='flex flex-row justify-center items-center gap-x-4'>
+                                    <div className='w-12 h-12 rounded-full relative bg-slate-400'>
+                                        <Image src={likedUser.user.image ?? '/placeholder_image.svg'} alt='' fill />
+                                    </div>
+                                    <div className='flex flex-col items-start justify-center'>
+                                        <p className='text-base font-semibold'>{likedUser.user.first_name} {likedUser.user.last_name}</p>
+                                    </div>
+                                </div>
+                            </Link>
                         )
                     })
                 }
