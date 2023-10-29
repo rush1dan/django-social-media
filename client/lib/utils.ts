@@ -11,6 +11,10 @@ export function apiPath(path: string) {
     return `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`
 }
 
+export function getMediaURLFromApiBackend(mediaURL: string | null) {
+  return `${process.env.NEXT_PUBLIC_BACKEND_URL}${mediaURL}`
+}
+
 export function formatRelativeTime(dateTimeString: string): string {
     const now = new Date();
     const pastDate = new Date(dateTimeString);
@@ -31,8 +35,4 @@ export function formatRelativeTime(dateTimeString: string): string {
       return days + "d ago";
     }
   }
-  
-//   const dateTimeString = "2023-10-26T16:50:59.380973Z";
-//   const relativeTime = formatRelativeTime(dateTimeString);
-//   console.log(relativeTime);
   

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ActionButton from '../ActionButton'
 import axios from 'axios'
-import { FetchStatus, apiPath } from '@/lib/utils'
+import { FetchStatus, apiPath, getMediaURLFromApiBackend } from '@/lib/utils'
 import { useAuth } from '@/hooks/userAuth'
 import ActionLink from '../ActionLink'
 import UserInfo from '../UserInfo'
@@ -52,7 +52,6 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     const [latestComment, setLatestComment] = useState<UserCommentType | null>(feedItem.latest_comment);
     const [commentsModalOpened, setCommentsModalOpened] = useState<boolean>(false);
 
-
     return (
         <div className='w-full h-fit bg-slate-50 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
             {/* User Info */}
@@ -71,9 +70,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
             {/* Image */}
             {
                 feedItem.post.image &&
-                <div className='w-full aspect-video bg-blue-500 rounded-lg'>
-
-                </div>
+                <img src={getMediaURLFromApiBackend(feedItem.post.image)} alt='post image' className='w-full h-auto' />
             }
 
             {/* Like Comment Links */}

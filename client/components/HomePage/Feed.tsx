@@ -15,9 +15,11 @@ type Props = {}
 
 const Feed = (props: Props) => {
     const { user } = useAuth();
+
     const [fetchState, setFetchState] = useState<number>(0);
     const [fetchMsg, setFetchMsg] = useState<string>('');
-    const [feedData, setFeedData] = useState<FeedItemDataType[]>();
+    const [feedData, setFeedData] = useState<FeedItemDataType[]>([]);
+
     const fetchData = useCallback(async () => {
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/feed/`, {
@@ -44,6 +46,11 @@ const Feed = (props: Props) => {
 
     const [postModalOpened, setPostModalOpened] = useState<boolean>(false);
 
+    const onPostCreated = useCallback((feedItem: FeedItemDataType) => {
+        setFeedData((current) => [feedItem, ...current]);
+        setPostModalOpened(false);
+    }, []);
+
     return (
         <div className='w-full min-h-full'>
             {/* Create Post */}
@@ -68,7 +75,7 @@ const Feed = (props: Props) => {
                 <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] pt-16 rounded-lg bg-slate-50 overflow-clip'
                         hidden={!postModalOpened} onClosed={() => setPostModalOpened(false)}
                         popUpHeader='Create Post'>
-                        <CreatePostModal user={user} />
+                        <CreatePostModal user={user} onPostCreated={onPostCreated}/>
                 </Popup>
             }
 

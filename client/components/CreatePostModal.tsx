@@ -1,4 +1,4 @@
-import { User } from '@/data/typedata'
+import { FeedItemDataType, User } from '@/data/typedata'
 import React, { ReactEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
@@ -6,10 +6,11 @@ import { FetchStatus, apiPath } from '@/lib/utils'
 import ActionButton from './ActionButton'
 
 type Props = {
-    user?: User
+    user?: User,
+    onPostCreated: (feedItem: FeedItemDataType) => void,
 }
 
-const CreatePostModal = ({ user }: Props) => {
+const CreatePostModal = ({ user, onPostCreated }: Props) => {
     useEffect(() => {
         const postArea = document.getElementById("create_post");
 
@@ -50,11 +51,12 @@ const CreatePostModal = ({ user }: Props) => {
                 },
             })
             if (response.status === 201) {
-                console.log(response.data);
                 setPostingState(FetchStatus.success);
                 postFormRef.current?.reset();
                 setInputImage(null);
                 setInputImageSrc(null);
+
+                onPostCreated(response.data);
             }
         } catch (error: any) {
             console.log("Post creationg error: ", error.message);
@@ -93,9 +95,8 @@ const CreatePostModal = ({ user }: Props) => {
                             <input type="file" accept="image/png, image/jpeg" className='hidden' onChange={e => handleImageSelection(e)} />
                             {
                                 inputImageSrc ?
-                                    <div className='w-full aspect-square relative cursor-pointer'>
-                                        <Image src={inputImageSrc} alt='image' fill />
-                                    </div> :
+                                    <img src={inputImageSrc} alt='post image' className='w-full h-auto cursor-pointer
+                                        hover:ring-2 hover:ring-blue-500' /> :
                                     <div className='w-full h-32 rounded-lg bg-slate-200 border-2 border-slate-300 flex flex-row items-center justify-center gap-x-2 cursor-pointer'>
                                         <div className='w-12 h-12 relative'>
                                             <Image src='/placeholder_image.svg' alt='image' fill />
