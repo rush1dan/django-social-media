@@ -6,12 +6,14 @@ import { useRouter } from 'next/navigation'
 
 const ProtectedRoute = ({ children } : { children: React.ReactNode }) => {
     const router = useRouter();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, authCheckComplete } = useAuth();
+
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (authCheckComplete && !isAuthenticated) {
             router.push('/login');
         }
     }, [isAuthenticated])
+
     return isAuthenticated ? (
         <>
             {children}

@@ -2,10 +2,10 @@ import { ReactNode } from "react"
 
 export const metadata = {
     title: 'Register',
-    description: 'Tracky - Register',
+    description: 'Django Social Media - Register',
 }
 
-export default function AuthPageLayout({ children } : { children: ReactNode}) {
+export default function RegisterPageLayout({ children } : { children: ReactNode}) {
     return (
         <>
             {children}
