@@ -11,13 +11,13 @@ const InfoCard = (props: Props) => {
         <div className='w-full rounded-lg bg-white shadow-md shadow-black/10 pt-20 pb-6 px-6 mt-20 relative
         flex flex-col items-center justify-start'>
             {/* Name & Bio */}
-            <div className='w-full h-full flex flex-col items-center justify-center gap-y-4'>
+            <div className='w-full max-h-[24rem] flex flex-col items-center justify-center gap-y-4 overflow-y-auto overflow-x-hidden'>
                 {/* Name */}
                 <div className='w-full flex flex-row justify-center items-center'>
                     <p>{user?.first_name} {user?.last_name}</p>
                 </div>
                 {/* Bio */}
-                <div className='w-full text-center'>
+                <div className='w-full text-center break-words'>
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nostrum quidem velit sint dicta, cupiditate fugiat eligendi accusantium magni! Accusantium soluta sed dicta molestias quos sunt id neque consectetur accusamus perferendis.
                 </div>
             </div>
