@@ -68,14 +68,11 @@ def get_serialized_post(requestingUser, post, exclude_user=False):
 
     return final_serialized_data
 
-def get_serialized_user_posts(requestingUser, targetUser):
-    posts_data = {}
-    posts_data['user'] = get_serialized_user_info(targetUser, exclude=['bio', 'followers'])
+def get_serialized_user_posts(requestingUser, targetUser) -> list[dict]:
     posts_list = []
     for post in targetUser.posts.all().order_by('-updated_at'):
         posts_list.append(get_serialized_post(requestingUser, post, exclude_user=True))
-    posts_data['posts'] = posts_list
-    return posts_data
+    return posts_list
 
 def get_serialized_posts(requestingUser, posts):
     posts_list = []

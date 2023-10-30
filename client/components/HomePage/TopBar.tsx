@@ -1,6 +1,6 @@
 'use client'
 
-import { UserDataType } from '@/data/typedata'
+import { PublicUserInfo } from '@/data/typedata'
 import { useAuth } from '@/hooks/userAuth'
 import { apiPath } from '@/lib/utils'
 import axios from 'axios'
@@ -15,7 +15,7 @@ type Props = {
 const TopBar = ({ className }: Props) => {
     const { user } = useAuth();
     const [searchText, setSearchText] = useState<string>('');
-    const [searchData, setSearchData] = useState<UserDataType[]>([]);
+    const [searchData, setSearchData] = useState<PublicUserInfo[]>([]);
 
     const search = async (text: string) => {
         setSearchText(text);

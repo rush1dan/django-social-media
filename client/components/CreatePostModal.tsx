@@ -1,4 +1,4 @@
-import { FeedItemDataType, User } from '@/data/typedata'
+import { FeedItem, User } from '@/data/typedata'
 import React, { ReactEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
@@ -7,7 +7,7 @@ import ActionButton from './ActionButton'
 
 type Props = {
     user?: User,
-    onPostCreated: (feedItem: FeedItemDataType) => void,
+    onPostCreated: (feedItem: FeedItem) => void,
 }
 
 const CreatePostModal = ({ user, onPostCreated }: Props) => {

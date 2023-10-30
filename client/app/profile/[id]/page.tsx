@@ -1,6 +1,6 @@
 import React from 'react'
 import ProtectedRoute from '@/components/ProtectedRoute';
-import ProfileContent from '@/components/ProfilePage/ProfileContent';
+import ProfileLoader from '@/components/ProfilePage/ProfileLoader';
 
 const ProfilePage = ({params}: any) => {
     const { id } = params;  //This id is the .../profile/[id]/
@@ -18,7 +18,7 @@ const ProfilePage = ({params}: any) => {
 					</div>
 					{/* Feed */}
 					<div className='w-1/2 h-full bg-green-400 p-6 overflow-y-auto'>
-						<ProfileContent />
+						<ProfileLoader />
 					</div>
 					{/* Right SideBar */}
 					<div className='w-1/4 h-full bg-blue-400'>

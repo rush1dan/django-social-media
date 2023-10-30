@@ -1,4 +1,4 @@
-import { FeedItemDataType, UserCommentType } from '@/data/typedata'
+import { FeedItem, UserComment } from '@/data/typedata'
 import Image from 'next/image'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import ActionButton from '../ActionButton'
@@ -13,7 +13,7 @@ import CommentCard from '../CommentCard'
 import CommentBox from '../CommentBox'
 import Link from 'next/link'
 
-const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
+const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
     const { user } = useAuth();
 
     // Like Management:
@@ -49,7 +49,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItemDataType }) => {
     // Comment managment:
     const [commentLoadingState, setcommentLoadingState] = useState<number>(FetchStatus.none);
     const [commentsCount, setCommentsCount] = useState<number>(feedItem.comments);
-    const [latestComment, setLatestComment] = useState<UserCommentType | null>(feedItem.latest_comment);
+    const [latestComment, setLatestComment] = useState<UserComment | null>(feedItem.latest_comment);
     const [commentsModalOpened, setCommentsModalOpened] = useState<boolean>(false);
 
     return (

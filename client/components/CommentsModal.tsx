@@ -1,4 +1,4 @@
-import { UserCommentType } from '@/data/typedata'
+import { UserComment } from '@/data/typedata'
 import { useAuth } from '@/hooks/userAuth'
 import { FetchStatus, apiPath } from '@/lib/utils'
 import axios from 'axios'
@@ -17,7 +17,7 @@ type Props = {
 const CommentsModal = ({ postId, opened }: Props) => {
     const { user } = useAuth();
     const [fetchState, setFetchState] = useState<number>(FetchStatus.pending);
-    const [userComments, setComments] = useState<UserCommentType[] | null>(null);
+    const [userComments, setComments] = useState<UserComment[] | null>(null);
 
     const fetchComments = useCallback(async () => {
         try {

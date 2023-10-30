@@ -9,7 +9,7 @@ export type User = {
     image?: string
 }
 
-export type UserDataType = {
+export type PublicUserInfo = {
     id: number,
     username: string,
     first_name: string,
@@ -17,7 +17,7 @@ export type UserDataType = {
     image?: string
 }
 
-export type PostDataType = {
+export type Post = {
     id: number,
     description: string,
     created_at: string,
@@ -25,35 +25,42 @@ export type PostDataType = {
     image?: string
 }
 
-export type FeedItemDataType = {
-    user: UserDataType,
-    post: PostDataType,
+export type FeedItem = {
+    user: PublicUserInfo,
+    post: Post,
     likes: number,
     comments: number,
     liked: boolean,
-    latest_comment: UserCommentType
+    latest_comment: UserComment
 }
 
-export type CommentDataType = {
+export type Comment = {
     id: number,
     text: string,
     updated_at: string
 }
 
-export type UserCommentType = {
-    user: UserDataType,
-    comment: CommentDataType
+export type UserComment = {
+    user: PublicUserInfo,
+    comment: Comment
 }
 
-export type ProfilePostDataType = {
-    post: PostDataType,
+export type PostData = {
+    post: Post,
     likes: number,
     comments: number,
     liked: boolean,
-    latest_comment: UserCommentType
+    latest_comment: UserComment
 }
 
-export type ProfileDataType = {
-    user: UserDataType,
-    posts: ProfilePostDataType[]
+export type ProfileData = {
+    user: PublicUserInfo,
+    is_following: boolean,
+    posts: PostData[] | null
+}
+
+export enum ProfileType {
+    OWNER = 0,
+    FOLLOWING = 1,
+    NOT_FOLLOWING = 2
 }

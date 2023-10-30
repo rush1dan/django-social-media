@@ -1,11 +1,11 @@
-import { UserCommentType, UserDataType } from '@/data/typedata'
+import { UserComment, PublicUserInfo } from '@/data/typedata'
 import React from 'react'
 import Image from 'next/image'
 import { formatRelativeTime } from '@/lib/utils'
 import Link from 'next/link'
 
 type Props = {
-    userComment: UserCommentType
+    userComment: UserComment
 }
 
 const CommentCard = ({ userComment }: Props) => {

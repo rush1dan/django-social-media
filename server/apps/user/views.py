@@ -88,16 +88,25 @@ def user_view(request):
 def profile_view(request, pk):
     try:
         requestingUser = request.user
+        final_serialized_data = {}
         if requestingUser.id == pk:   #user viewing own profile
+            final_serialized_data['user'] = get_serialized_user_info(requestingUser)
             serialized_posts_data = get_serialized_user_posts(requestingUser, requestingUser)
-            return Response(serialized_posts_data, status=200)
+            final_serialized_data['posts'] = serialized_posts_data
+            final_serialized_data['is_following'] = False
+            return Response(final_serialized_data, status=200)
         else:   #not own profile
             targetUser = User.objects.get(id=pk)
+            final_serialized_data['user'] = get_serialized_user_info(targetUser)
             if is_following(requesting_user=requestingUser, target_user=targetUser):     #user following this profile's user
+                final_serialized_data['is_following'] = True
                 serialized_posts_data = get_serialized_user_posts(requestingUser, targetUser)
-                return Response(serialized_posts_data, status=200)
+                final_serialized_data['posts'] = serialized_posts_data
+                return Response(final_serialized_data, status=200)
             else:   #user not following this profile's user
-                return Response('Not following', status=403)
+                final_serialized_data['is_following'] = False
+                final_serialized_data['posts'] = None
+                return Response(final_serialized_data, status=200)
     except Exception as ex:
         print_error()
         return Response('Something went wrong', status=500)

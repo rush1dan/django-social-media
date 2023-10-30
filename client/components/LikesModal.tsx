@@ -1,4 +1,4 @@
-import { UserDataType } from '@/data/typedata'
+import { PublicUserInfo } from '@/data/typedata'
 import { useAuth } from '@/hooks/userAuth'
 import { FetchStatus, apiPath } from '@/lib/utils'
 import axios from 'axios'
@@ -13,7 +13,7 @@ type Props = {
 }
 
 type LikedUser = {
-    user: UserDataType
+    user: PublicUserInfo
 }
 
 const LikesModal = ({ postId, opened }: Props) => {

@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react'
 import ActionButton from './ActionButton'
 import { FetchStatus, apiPath } from '@/lib/utils'
 import axios from 'axios'
-import { User, UserCommentType } from '@/data/typedata'
+import { User, UserComment } from '@/data/typedata'
 import Image from 'next/image'
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
     post_id: number,
     commentLoadingState: number,
     setCommentLoadingState: React.Dispatch<React.SetStateAction<number>>,
-    setLatestComment: React.Dispatch<React.SetStateAction<UserCommentType | null>>,
+    setLatestComment: React.Dispatch<React.SetStateAction<UserComment | null>>,
     setCommentsCount: React.Dispatch<React.SetStateAction<number>>
 }   
 

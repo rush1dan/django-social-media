@@ -5,7 +5,7 @@ import LoadingWrapper from '../LoadingWrapper'
 import { FetchStatus } from '@/lib/utils'
 import axios from 'axios'
 import { useAuth } from '@/hooks/userAuth'
-import { FeedItemDataType } from '@/data/typedata'
+import { FeedItem } from '@/data/typedata'
 import PostCard from './PostCard'
 import Image from 'next/image'
 import Popup from '../Popup'
@@ -16,11 +16,12 @@ type Props = {}
 const Feed = (props: Props) => {
     const { user } = useAuth();
 
-    const [fetchState, setFetchState] = useState<number>(0);
+    const [fetchState, setFetchState] = useState<number>(FetchStatus.none);
     const [fetchMsg, setFetchMsg] = useState<string>('');
-    const [feedData, setFeedData] = useState<FeedItemDataType[]>([]);
+    const [feedData, setFeedData] = useState<FeedItem[]>([]);
 
     const fetchData = useCallback(async () => {
+        setFetchState(FetchStatus.pending);
         try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/feed/`, {
                 headers: {
@@ -46,7 +47,7 @@ const Feed = (props: Props) => {
 
     const [postModalOpened, setPostModalOpened] = useState<boolean>(false);
 
-    const onPostCreated = useCallback((feedItem: FeedItemDataType) => {
+    const onPostCreated = useCallback((feedItem: FeedItem) => {
         setFeedData((current) => [feedItem, ...current]);
         setPostModalOpened(false);
     }, []);
