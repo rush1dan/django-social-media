@@ -154,7 +154,7 @@ def followers_view(request):
 def search_users_view(request):
     try:
         requestingUser = request.user
-        search_text = request.data
+        search_text = request.data['keyword']
         user_list = User.objects.annotate(
                         full_name=Concat('first_name', V(' '), 'last_name')
                     ).filter(   
