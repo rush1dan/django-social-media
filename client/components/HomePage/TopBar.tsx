@@ -19,9 +19,6 @@ const TopBar = ({ className }: Props) => {
 
     const search = async (text: string) => {
         setSearchText(text);
-        if (!text) {
-            setSearchData([]);
-        }
         try {
             const response = await axios.post(apiPath(`search_users/`), {
                 keyword: text
@@ -31,7 +28,6 @@ const TopBar = ({ className }: Props) => {
                 }
             });
             if (response.status === 200) {
-                console.log(response.data);
                 setSearchData(response.data);
             }
         } catch (error: any) {
@@ -47,7 +43,12 @@ const TopBar = ({ className }: Props) => {
     return (
         <div className={className}>
             <div className='w-full h-full flex flex-row items-center justify-center'>
-                <form className='w-1/2 h-[60%] relative' onSubmit={handleSubmit}>
+                <form className='max-w-lg w-1/2 h-[60%] relative' onSubmit={handleSubmit}>
+                    <div className='absolute top-1/2 -translate-y-1/2 right-8 translate-x-1/2 h-full aspect-square p-1'>
+                        <div className='h-full aspect-square relative'>
+                            <Image src='/search.svg' alt='search' fill />
+                        </div>
+                    </div>
                     <input className='w-full h-full rounded-full' type="text" onChange={e => search(e.target.value)} />
                     {
                         searchText &&

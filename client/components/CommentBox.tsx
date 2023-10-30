@@ -62,9 +62,9 @@ const CommentBox = ({user, post_id, commentLoadingState, setCommentLoadingState,
                 <textarea rows={1} ref={commentInputBoxRef} className='w-full rounded-lg h-fit text-left pr-16 resize-none overflow-hidden' required onChange={e => setComment(e.target.value)}
                     placeholder='Write a comment...' />
                 <ActionButton buttonType='submit' isPending={commentLoadingState === FetchStatus.pending}>
-                    <div className='absolute h-12 aspect-square p-2 top-1/2 -translate-y-1/2 right-4'>
-                        <div className='w-full h-full relative'>
-                            <Image src='share.svg' alt='' fill />
+                    <div className='absolute h-12 aspect-square p-2 top-1/2 -translate-y-1/2 right-2'>
+                        <div className='w-full h-full relative -mt-1'>
+                            <Image src='/send.svg' alt='' fill />
                         </div>
                     </div>
                 </ActionButton>
