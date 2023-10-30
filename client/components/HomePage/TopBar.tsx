@@ -19,6 +19,9 @@ const TopBar = ({ className }: Props) => {
 
     const search = async (text: string) => {
         setSearchText(text);
+        if (!text) {
+            setSearchData([]);
+        }
         try {
             const response = await axios.post(apiPath(`search_users/`), {
                 keyword: text
@@ -28,6 +31,7 @@ const TopBar = ({ className }: Props) => {
                 }
             });
             if (response.status === 200) {
+                console.log(response.data);
                 setSearchData(response.data);
             }
         } catch (error: any) {

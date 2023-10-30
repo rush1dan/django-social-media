@@ -155,14 +155,15 @@ def search_users_view(request):
     try:
         requestingUser = request.user
         search_text = request.data['keyword']
-        user_list = User.objects.annotate(
-                        full_name=Concat('first_name', V(' '), 'last_name')
-                    ).filter(   
-                        Q(full_name=search_text) | 
-                        Q(full_name__icontains=search_text) |
-                        Q(first_name__istartswith=search_text) | 
-                        Q(last_name__istartswith=search_text)
-                    )
+        user_list = []
+        if len(search_text) > 0:
+            user_list = User.objects.annotate(
+                            full_name=Concat('first_name', V(' '), 'last_name')
+                        ).filter(   
+                            Q(full_name=search_text) | 
+                            Q(first_name__istartswith=search_text) | 
+                            Q(last_name__istartswith=search_text)
+                        )
         return Response(get_serialized_users(user_list), status=200)
     except Exception as ex:
         print_error()
