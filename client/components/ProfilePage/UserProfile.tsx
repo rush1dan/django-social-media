@@ -49,15 +49,22 @@ const UserProfile = ({ profileData }: Props) => {
                 </Popup>
             }
 
-            <div className='w-full min-h-full flex flex-col items-center justify-start gap-y-6'>
-                {
-                    profilePostData?.map((data, index) => {
-                        return (
-                            <PostCard feedItem={{user: profileData.user, ...data}} key={data.post.id} />
-                        )
-                    })
-                }
-            </div>
+            {
+                profilePostData.length > 0 ?
+                    <div className='w-full min-h-full flex flex-col items-center justify-start gap-y-6'>
+                        {
+                            profilePostData?.map((data, index) => {
+                                return (
+                                    <PostCard feedItem={{ user: profileData.user, ...data }} key={data.post.id} />
+                                )
+                            })
+                        }
+                    </div>
+                    :
+                    <div className='w-full text-center text-3xl font-semibold text-gray-400'>
+                        User has no posts
+                    </div>
+            }
         </div>
     )
 }

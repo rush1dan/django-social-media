@@ -18,7 +18,7 @@ const Feed = (props: Props) => {
 
     const [fetchState, setFetchState] = useState<number>(FetchStatus.none);
     const [fetchMsg, setFetchMsg] = useState<string>('');
-    const [feedData, setFeedData] = useState<FeedItem[]>([]);
+    const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
 
     const fetchData = useCallback(async () => {
         setFetchState(FetchStatus.pending);
@@ -31,7 +31,7 @@ const Feed = (props: Props) => {
             if (response.status === 200) {
                 setFetchState(FetchStatus.success);
                 setFetchMsg(response.statusText);
-                setFeedData(response.data);
+                setFeedItems(response.data);
             } else {
                 setFetchState(FetchStatus.error);
                 setFetchMsg(response.statusText);
@@ -48,7 +48,7 @@ const Feed = (props: Props) => {
     const [postModalOpened, setPostModalOpened] = useState<boolean>(false);
 
     const onPostCreated = useCallback((feedItem: FeedItem) => {
-        setFeedData((current) => [feedItem, ...current]);
+        setFeedItems((current) => [feedItem, ...current]);
         setPostModalOpened(false);
     }, []);
 
@@ -74,23 +74,30 @@ const Feed = (props: Props) => {
             {
                 postModalOpened &&
                 <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] pt-16 rounded-lg bg-slate-50 overflow-clip'
-                        hidden={!postModalOpened} onClosed={() => setPostModalOpened(false)}
-                        popUpHeader='Create Post'>
-                        <CreatePostModal user={user} onPostCreated={onPostCreated}/>
+                    hidden={!postModalOpened} onClosed={() => setPostModalOpened(false)}
+                    popUpHeader='Create Post'>
+                    <CreatePostModal user={user} onPostCreated={onPostCreated} />
                 </Popup>
             }
 
             {/* Post Cards */}
             <LoadingWrapper fetchState={fetchState} fetchInfo={fetchMsg}>
-                <div className='w-full min-h-full flex flex-col items-center justify-start gap-y-6'>
-                    {
-                        feedData?.map((data, index) => {
-                            return (
-                                <PostCard feedItem={data} key={data.post.id} />
-                            )
-                        })
-                    }
-                </div>
+                {
+                    feedItems.length > 0 ?
+                        <div className='w-full min-h-full flex flex-col items-center justify-start gap-y-6'>
+                            {
+                                feedItems?.map((data, index) => {
+                                    return (
+                                        <PostCard feedItem={data} key={data.post.id} />
+                                    )
+                                })
+                            }
+                        </div>
+                        :
+                        <div className='w-full text-center text-3xl font-semibold text-gray-400'>
+                            Nothing to show
+                        </div>
+                }
             </LoadingWrapper>
         </div>
     )
