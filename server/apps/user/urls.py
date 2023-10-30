@@ -17,5 +17,7 @@ urlpatterns = [
     
     path('follow/<int:pk>/', user_views.follow_view),
     path('followers/', user_views.followers_view),
-    path('following/', user_views.following_view)
+    path('following/', user_views.following_view),
+
+    path('search_users/', user_views.search_users_view),
 ]

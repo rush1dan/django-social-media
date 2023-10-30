@@ -45,3 +45,9 @@ def get_serialized_user_info(user, fields = ['id', 'username', 'first_name', 'la
             del final_serialized_data[key]
 
     return final_serialized_data
+
+def get_serialized_users(users):
+    serialized_user_data = []
+    for user in users:
+        serialized_user_data.append(get_serialized_user_info(user, exclude=['bio', 'followers']))
+    return serialized_user_data

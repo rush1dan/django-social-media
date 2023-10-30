@@ -8,10 +8,14 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import UserInfo
 from django.contrib.auth import authenticate
-from apps.user.serializers import UserCreateSerializer, UserSerializer, get_serialized_user_info
+from apps.user.serializers import UserCreateSerializer, UserSerializer, get_serialized_user_info, get_serialized_users
 from apps.post.serializers import get_serialized_user_posts
 from django.core.exceptions import ObjectDoesNotExist
 from .utils import is_following
+
+from django.db.models import Q, F
+from django.db.models import Value as V
+from django.db.models.functions import Concat 
 
 from traceback import print_exc as print_error
 
@@ -140,6 +144,26 @@ def followers_view(request):
         follower_users = requestingUser.info.follower_users
         serialized_data = [get_serialized_user_info(user, exclude=['bio', 'followers']) for user in follower_users]
         return Response(serialized_data, status=200)
+    except Exception as ex:
+        print_error()
+        return Response("Something went wrong", status=500)
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def search_users_view(request):
+    try:
+        requestingUser = request.user
+        search_text = request.data
+        user_list = User.objects.annotate(
+                        full_name=Concat('first_name', V(' '), 'last_name')
+                    ).filter(   
+                        Q(full_name=search_text) | 
+                        Q(full_name__icontains=search_text) |
+                        Q(first_name__istartswith=search_text) | 
+                        Q(last_name__istartswith=search_text)
+                    )
+        return Response(get_serialized_users(user_list), status=200)
     except Exception as ex:
         print_error()
         return Response("Something went wrong", status=500)
