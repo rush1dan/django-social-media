@@ -44,3 +44,16 @@ export type UserCommentType = {
     user: UserDataType,
     comment: CommentDataType
 }
+
+export type ProfilePostDataType = {
+    post: PostDataType,
+    likes: number,
+    comments: number,
+    liked: boolean,
+    latest_comment: UserCommentType
+}
+
+export type ProfileDataType = {
+    user: UserDataType,
+    posts: ProfilePostDataType[]
+}
