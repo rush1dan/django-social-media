@@ -22,11 +22,22 @@ class UserCreateSerializer(serializers.ModelSerializer):
         return user
     
 
-## Creating and sending user info
+## Sending user info
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
         exclude = ['user']
+
+class UserInfoEditSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = ['bio', 'image']
+
+    def update(self, instance, validated_data):
+        instance.bio = validated_data['bio']
+        instance.image = validated_data['image']
+        instance.save()
+        return instance
 
 
 ## For retrieving custom required JSON data

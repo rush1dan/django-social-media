@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from .models import UserInfo
 from django.contrib.auth import authenticate
-from apps.user.serializers import UserCreateSerializer, UserSerializer, get_serialized_user_info, get_serialized_users
+from apps.user.serializers import UserCreateSerializer, UserInfoSerializer, get_serialized_user_info, get_serialized_users, UserInfoEditSerializer
 from apps.post.serializers import get_serialized_user_posts
 from django.core.exceptions import ObjectDoesNotExist
 from .utils import is_following
@@ -83,30 +83,39 @@ def user_view(request):
         return Response("Something went wrong", status=500)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 @permission_classes([IsAuthenticated])
 def profile_view(request, pk):
     try:
         requestingUser = request.user
-        final_serialized_data = {}
-        if requestingUser.id == pk:   #user viewing own profile
-            final_serialized_data['user'] = get_serialized_user_info(requestingUser)
-            serialized_posts_data = get_serialized_user_posts(requestingUser, requestingUser)
-            final_serialized_data['posts'] = serialized_posts_data
-            final_serialized_data['is_following'] = False
-            return Response(final_serialized_data, status=200)
-        else:   #not own profile
-            targetUser = User.objects.get(id=pk)
-            final_serialized_data['user'] = get_serialized_user_info(targetUser)
-            if is_following(requesting_user=requestingUser, target_user=targetUser):     #user following this profile's user
-                final_serialized_data['is_following'] = True
-                serialized_posts_data = get_serialized_user_posts(requestingUser, targetUser)
+        if request.method == 'GET':
+            final_serialized_data = {}
+            if requestingUser.id == pk:   #user viewing own profile
+                final_serialized_data['user'] = get_serialized_user_info(requestingUser)
+                serialized_posts_data = get_serialized_user_posts(requestingUser, requestingUser)
                 final_serialized_data['posts'] = serialized_posts_data
-                return Response(final_serialized_data, status=200)
-            else:   #user not following this profile's user
                 final_serialized_data['is_following'] = False
-                final_serialized_data['posts'] = None
                 return Response(final_serialized_data, status=200)
+            else:   #not own profile
+                targetUser = User.objects.get(id=pk)
+                final_serialized_data['user'] = get_serialized_user_info(targetUser)
+                if is_following(requesting_user=requestingUser, target_user=targetUser):     #user following this profile's user
+                    final_serialized_data['is_following'] = True
+                    serialized_posts_data = get_serialized_user_posts(requestingUser, targetUser)
+                    final_serialized_data['posts'] = serialized_posts_data
+                    return Response(final_serialized_data, status=200)
+                else:   #user not following this profile's user
+                    final_serialized_data['is_following'] = False
+                    final_serialized_data['posts'] = None
+                    return Response(final_serialized_data, status=200)
+        elif request.method == 'PUT':
+            serializer = UserInfoEditSerializer(requestingUser.info, data=request.data)
+            user_info = None
+            if serializer.is_valid(raise_exception=True):
+                user_info = serializer.save()
+            return Response(get_serialized_user_info(requestingUser), status=200)
+        else:
+            return Response("Invalid Request", status=400)
     except Exception as ex:
         print_error()
         return Response('Something went wrong', status=500)
