@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react'
 import LoadingWrapper from '../LoadingWrapper'
-import { FetchStatus } from '@/lib/utils'
+import { FetchStatus, getMediaURLFromApiBackend } from '@/lib/utils'
 import axios from 'axios'
 import { useAuth } from '@/hooks/userAuth'
 import { FeedItem } from '@/data/typedata'
@@ -57,8 +57,8 @@ const Feed = (props: Props) => {
             {/* Create Post */}
             <div className='w-full h-fit p-2 bg-slate-50 mb-6 rounded-lg'>
                 <div className='flex flex-row items-center justify-start gap-x-2 mb-2'>
-                    <div className='flex-none w-12 h-12 rounded-full relative bg-slate-500'>
-                        <Image src={user?.image ?? '/placeholder_image.svg'} alt='dp' fill />
+                    <div className='flex-none w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
+                        <Image src={user?.image ? getMediaURLFromApiBackend(user.image) : '/user.svg'} alt='dp' fill />
                     </div>
                     <button type='button' className='w-full rounded-full h-10 text-left px-4 py-2 bg-slate-200 hover:bg-slate-300 text-gray-500 font-medium'
                         onClick={e => setPostModalOpened(true)}>

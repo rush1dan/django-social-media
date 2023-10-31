@@ -4,7 +4,6 @@ import { FetchStatus, apiPath } from '@/lib/utils'
 import axios from 'axios'
 import React, {useState, useCallback, useEffect} from 'react'
 import LoadingWrapper from './LoadingWrapper'
-import UserInfo from './UserInfo'
 import CommentCard from './CommentCard'
 
 type Props = {

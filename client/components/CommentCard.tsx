@@ -1,7 +1,7 @@
 import { UserComment, PublicUserInfo } from '@/data/typedata'
 import React from 'react'
 import Image from 'next/image'
-import { formatRelativeTime } from '@/lib/utils'
+import { formatRelativeTime, getMediaURLFromApiBackend } from '@/lib/utils'
 import Link from 'next/link'
 
 type Props = {
@@ -14,8 +14,8 @@ const CommentCard = ({ userComment }: Props) => {
             {/* User and Timestamp*/}
             <div className='w-full flex flex-row items-center justify-between'>
                 <Link href={`/profile/${userComment.user.id}/`} className='flex flex-row items-center justify-start gap-x-2'>
-                    <div className='w-12 h-12 flex-none rounded-full relative bg-slate-500'>
-                        <Image src={userComment.user.image ?? '/placeholder_image.svg'} alt='' fill />
+                    <div className='w-12 h-12 flex-none rounded-full relative bg-slate-500 overflow-clip'>
+                        <Image src={userComment.user.image ? getMediaURLFromApiBackend(userComment.user.image) : '/user.svg'} alt='' fill />
                     </div>
                     <p className='font-semibold text-lg'>{userComment.user.first_name} {userComment.user.last_name}</p>
                 </Link>

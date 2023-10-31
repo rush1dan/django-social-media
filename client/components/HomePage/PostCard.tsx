@@ -56,8 +56,8 @@ const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
         <div className='w-full h-fit bg-slate-50 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
             {/* User Info */}
             <Link href={`/profile/${feedItem.user.id}/`} className='flex flex-row justify-center items-center gap-x-2'>
-                <div className='w-12 h-12 rounded-full relative bg-slate-400'>
-                    <Image src={feedItem.user.image ?? '/placeholder_image.svg'} alt='' fill />
+                <div className='w-12 h-12 rounded-full relative bg-slate-400 overflow-clip'>
+                    <Image src={feedItem.user.image ? getMediaURLFromApiBackend(feedItem.user.image) : '/user.svg'} alt='dp' fill />
                 </div>
                 <div className='flex flex-col items-start justify-center'>
                     <p className='text-base font-semibold'>{feedItem.user.first_name} {feedItem.user.last_name}</p>

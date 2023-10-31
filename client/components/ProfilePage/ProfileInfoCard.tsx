@@ -2,6 +2,7 @@
 
 import { PublicUserInfo } from '@/data/typedata'
 import { useAuth } from '@/hooks/userAuth'
+import { getMediaURLFromApiBackend } from '@/lib/utils'
 import Image from 'next/image'
 import React from 'react'
 
@@ -27,8 +28,8 @@ const ProfileInfoCard = ({ userInfo }: Props) => {
 
             {/* Image */}
             <div className='absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 w-32 h-32 z-10'>
-                <div className='w-full h-full rounded-full relative bg-slate-500'>
-                    <Image src={userInfo.image ?? '/placeholder_image.svg'} alt='dp' fill />
+                <div className='w-full h-full rounded-full relative bg-slate-500 overflow-clip'>
+                    <Image src={userInfo.image ? getMediaURLFromApiBackend(userInfo.image) : '/user.svg'} alt='dp' fill />
                 </div>
             </div>
         </div>
