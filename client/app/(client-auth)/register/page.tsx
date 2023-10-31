@@ -2,7 +2,7 @@
 
 import axios, { AxiosError } from "axios";
 import { useState, useEffect, useRef, FormEvent } from "react"
-import { FetchStatus } from "@/lib/utils";
+import { FetchStatus, apiPath } from "@/lib/utils";
 import LoadingState from "@/components/LoadingState";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -43,7 +43,7 @@ export default function RegisterPage() {
         e.preventDefault();
         setFetchState(FetchStatus.pending);
         try {
-            const res = await axios.post('/api/register', data);
+            const res = await axios.post(apiPath('register/'), data);
             console.log(res.data);
             setFetchState(FetchStatus.success);
             router.push('/login');
@@ -107,7 +107,7 @@ export default function RegisterPage() {
                                     <input
                                         id="first_name"
                                         name="first_name"
-                                        type="first_name"
+                                        type="text"
                                         autoComplete="first_name"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
@@ -124,7 +124,7 @@ export default function RegisterPage() {
                                     <input
                                         id="last_name"
                                         name="last_name"
-                                        type="last_name"
+                                        type="text"
                                         autoComplete="last_name"
                                         required
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
