@@ -9,6 +9,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import LoadingWrapper from '../LoadingWrapper';
 import ProfileContent from './ProfileContent';
 import ProfileInfoCard from './ProfileInfoCard';
+import ActionButton from '../ActionButton';
 
 type Props = {}
 
@@ -30,6 +31,7 @@ const ProfileLoader = (props: Props) => {
             });
             if (response.status === 200) {
                 const receivedProfileData: ProfileData = response.data;
+                console.log(receivedProfileData);
 
                 setProfileData(receivedProfileData);
                 setFetchState(FetchStatus.success);
@@ -57,31 +59,67 @@ const ProfileLoader = (props: Props) => {
         fetchProfile();
     }, [])
 
+    const [followRequestState, setFollowRequestState] = useState<number>(FetchStatus.none);
+
+    const followUnfollowRequest = useCallback(async () => {
+        setFollowRequestState(FetchStatus.pending);
+        try {
+            const response = await axios.post(apiPath(`/follow/${profileId}/`), {}, {
+                headers: {
+                    Authorization: `Bearer ${user?.access_token}`
+                }
+            });
+            if (response.status === 200) {
+                const { is_following }: { is_following: boolean } = response.data;
+                setFollowRequestState(FetchStatus.success);
+                setProfileType(is_following ? ProfileType.FOLLOWING : ProfileType.NOT_FOLLOWING);
+            }
+        } catch (error: any) {
+            console.log("Follow/Unfollow Error: ", error.message);
+            setFollowRequestState(FetchStatus.error);
+        }
+    }, []);
+
     return (
-        <div className='w-full h-full flex flex-row items-center justify-start'>
-            {/* Left SideBar */}
-            <div className='w-1/4 h-full bg-red-400 p-6'>
-                <LoadingWrapper fetchState={fetchState}>
-                    {   profileData &&
+        <LoadingWrapper fetchState={fetchState}>
+            <div className='w-full h-full flex flex-row items-center justify-start'>
+                {/* Left SideBar */}
+                <div className='w-1/4 h-full bg-red-400 p-6'>
+                    {
+                        profileData &&
                         <ProfileInfoCard userInfo={profileData?.user} />
                     }
-                </LoadingWrapper>
-            </div>
-
-            {/* Feed */}
-            <div className='w-1/2 h-full bg-green-400 p-6 overflow-y-auto'>
-                <LoadingWrapper fetchState={fetchState}>
+                    {
+                        profileType === ProfileType.FOLLOWING &&
+                        <ActionButton isPending={followRequestState === FetchStatus.pending} className='block mx-auto mt-8'
+                            onClick={followUnfollowRequest}>
+                            <div className='px-4 py-2 bg-slate-400 text-center text-xl rounded-lg text-white font-semibold'>
+                                Unfollow
+                            </div>
+                        </ActionButton>
+                    }
+                    {
+                        profileType === ProfileType.NOT_FOLLOWING &&
+                        <ActionButton isPending={followRequestState === FetchStatus.pending} className='block mx-auto mt-8'
+                            onClick={followUnfollowRequest}>
+                            <div className='px-4 py-2 bg-blue-500 text-center text-xl rounded-lg text-white font-semibold'>
+                                Follow
+                            </div>
+                        </ActionButton>
+                    }
+                </div>
+                {/* Feed */}
+                <div className='w-1/2 h-full bg-green-400 p-6 overflow-y-auto'>
                     {
                         profileData &&
                         <ProfileContent profileType={profileType} profileData={profileData} />
                     }
-                </LoadingWrapper>
+                </div>
+                {/* Right SideBar */}
+                <div className='w-1/4 h-full bg-blue-400'>
+                </div>
             </div>
-
-            {/* Right SideBar */}
-            <div className='w-1/4 h-full bg-blue-400'>
-            </div>
-        </div>
+        </LoadingWrapper>
     )
 }
 

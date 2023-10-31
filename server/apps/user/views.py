@@ -121,10 +121,10 @@ def follow_view(request, pk):
 
         if is_following(requesting_user=requestingUser, target_user=targetUser):
             targetUser.info.followers.remove(requestingUser.info)   #type:ignore
-            return Response(f'Unfollowed {targetUser.first_name} {targetUser.last_name}', status=200)
+            return Response({'is_following': False}, status=200)
         elif requestingUser.id != pk:
             targetUser.info.followers.add(requestingUser.info)  #type:ignore
-            return Response(f'Following {targetUser.first_name} {targetUser.last_name}', status=200)
+            return Response({'is_following': True}, status=200)
         else:
             return Response("Invalid Request", status=400)
     except Exception as ex:

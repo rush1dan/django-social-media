@@ -2,6 +2,7 @@ import { ProfileData, ProfileType } from '@/data/typedata'
 import React from 'react'
 import UserProfile from './UserProfile'
 import FollowingProfile from './FollowingProfile'
+import NotFollowingProfile from './NotFollowingProfile'
 
 type Props = {
     profileType: ProfileType | undefined,
@@ -32,8 +33,8 @@ const ProfileContent = ({ profileType, profileData }: Props) => {
             }
 
             {
-                profileType === ProfileType.NOT_FOLLOWING &&
-                <div>Not following</div>
+                (profileType === ProfileType.NOT_FOLLOWING && profileData !== null) &&
+                <NotFollowingProfile profileData={profileData} />
             }
         </div>
     )

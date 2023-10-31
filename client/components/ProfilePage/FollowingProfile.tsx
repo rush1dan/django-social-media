@@ -10,7 +10,7 @@ const FollowingProfile = ({profileData}: Props) => {
     return (
         <div className='w-full min-h-full'>
             {
-                profileData.posts!.length > 0 ?
+                profileData.posts !== null && profileData.posts.length > 0 ?
                 <div className='w-full min-h-full flex flex-col items-center justify-start gap-y-6'>
                 {
                     profileData.posts?.map((postData, index) => {
