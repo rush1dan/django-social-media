@@ -14,7 +14,8 @@ export type PublicUserInfo = {
     username: string,
     first_name: string,
     last_name: string,
-    image?: string
+    image?: string,
+    bio?: string
 }
 
 export type Post = {

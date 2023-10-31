@@ -17,7 +17,7 @@ const UserInfoCard = (props: Props) => {
             <div className='w-full max-h-[24rem] flex flex-col items-center justify-center gap-y-4 overflow-y-auto overflow-x-hidden'>
                 {/* Name */}
                 <div className='w-full flex flex-row justify-center items-center'>
-                    <p className='font-semibold'>{user?.first_name} {user?.last_name}</p>
+                    <p className='font-bold text-lg'>{user?.first_name} {user?.last_name}</p>
                 </div>
                 {/* Bio */}
                 <div className='w-full text-center break-words'>

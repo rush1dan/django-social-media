@@ -2,7 +2,7 @@
 
 import { PublicUserInfo } from '@/data/typedata'
 import { useAuth } from '@/hooks/userAuth'
-import { apiPath } from '@/lib/utils'
+import { apiPath, getMediaURLFromApiBackend } from '@/lib/utils'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -76,8 +76,8 @@ const TopBar = ({ className }: Props) => {
                                                     return (
                                                         <Link href={`/profile/${userData.id}`} className='w-full py-4 px-4 hover:bg-slate-500/25' key={index}>
                                                             <div className='flex flex-row items-center justify-start gap-x-2'>
-                                                                <div className='w-12 h-12 rounded-full relative bg-slate-500'>
-                                                                    <Image src={userData.image ?? '/placeholder_image.svg'} alt='dp' fill />
+                                                                <div className='w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
+                                                                    <Image src={userData.image ? getMediaURLFromApiBackend(userData.image) : '/user.svg'} alt='dp' fill />
                                                                 </div>
                                                                 <div className='text-center font-semibold'>
                                                                     {userData.first_name} {userData.last_name}

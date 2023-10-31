@@ -31,7 +31,6 @@ const ProfileLoader = (props: Props) => {
             });
             if (response.status === 200) {
                 const receivedProfileData: ProfileData = response.data;
-                console.log(receivedProfileData);
 
                 setProfileData(receivedProfileData);
                 setFetchState(FetchStatus.success);
