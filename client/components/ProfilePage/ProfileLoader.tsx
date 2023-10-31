@@ -83,7 +83,7 @@ const ProfileLoader = (props: Props) => {
         <LoadingWrapper fetchState={fetchState}>
             <div className='w-full h-full flex flex-row items-center justify-start'>
                 {/* Left SideBar */}
-                <div className='w-1/4 h-full bg-red-400 p-6'>
+                <div className='w-1/4 h-full bg-slate-100 p-6'>
                     {
                         profileData &&
                         <ProfileInfoCard userInfo={profileData?.user} />
@@ -108,14 +108,14 @@ const ProfileLoader = (props: Props) => {
                     }
                 </div>
                 {/* Feed */}
-                <div className='w-1/2 h-full bg-green-400 p-6 overflow-y-auto'>
+                <div className='w-1/2 h-full p-6 overflow-y-auto'>
                     {
                         profileData &&
                         <ProfileContent profileType={profileType} profileData={profileData} />
                     }
                 </div>
                 {/* Right SideBar */}
-                <div className='w-1/4 h-full bg-blue-400'>
+                <div className='w-1/4 h-full bg-slate-100'>
                 </div>
             </div>
         </LoadingWrapper>

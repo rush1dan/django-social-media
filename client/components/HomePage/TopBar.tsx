@@ -10,10 +10,11 @@ import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 
 type Props = {
-    className?: string
+    className?: string,
+    atProfilePage: boolean
 }
 
-const TopBar = ({ className }: Props) => {
+const TopBar = ({ className, atProfilePage }: Props) => {
     const { user, signOut } = useAuth();
     const [searchText, setSearchText] = useState<string>('');
     const [searchData, setSearchData] = useState<PublicUserInfo[]>([]);
@@ -49,11 +50,11 @@ const TopBar = ({ className }: Props) => {
         <div className={className}>
             <div className='w-full h-full flex flex-row items-center justify-around'>
                 {/* Profile button */}
-                <Link href={`/profile/${user?.id}/`} className='flex flex-row items-center justify-center gap-x-2 px-2 py-2 bg-blue-500 hover:bg-blue-600 rounded-full border-2 border-white'>
+                <Link href={atProfilePage ? '/' : `/profile/${user?.id}/`} className='flex flex-row items-center justify-center gap-x-2 px-2 py-2 bg-blue-500 hover:bg-blue-600 rounded-full border-2 border-white'>
                     <div className='w-6 h-6 relative'>
-                        <Image src={'/user.svg'} alt='profile' fill />
+                        <Image src={atProfilePage ? '/home.svg' : '/user.svg'} alt='profile' fill />
                     </div>
-                    <p className='text-white font-semibold'>{user?.username}</p>
+                    <p className='text-white font-semibold'>{atProfilePage ? 'Home' : user?.username}</p>
                 </Link>
 
                 {/* Search bar */}

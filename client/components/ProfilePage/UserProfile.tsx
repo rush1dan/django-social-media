@@ -25,7 +25,7 @@ const UserProfile = ({ profileData }: Props) => {
     return (
         <div className='w-full min-h-full'>
             {/* Create Post */}
-            <div className='w-full h-fit p-2 bg-slate-50 mb-6 rounded-lg'>
+            <div className='w-full h-fit p-2 bg-slate-50 border-2 border-slate-200 mb-6 rounded-lg'>
                 <div className='flex flex-row items-center justify-start gap-x-2 mb-2'>
                     <div className='flex-none w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
                         <Image src={user?.image ? getMediaURLFromApiBackend(user.image) : '/user.svg'} alt='dp' fill />

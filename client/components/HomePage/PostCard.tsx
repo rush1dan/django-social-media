@@ -53,7 +53,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
     const [commentsModalOpened, setCommentsModalOpened] = useState<boolean>(false);
 
     return (
-        <div className='w-full h-fit bg-slate-50 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
+        <div className='w-full h-fit bg-slate-50 border-2 border-slate-300 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
             {/* User Info */}
             <Link href={`/profile/${feedItem.user.id}/`} className='flex flex-row justify-center items-center gap-x-2'>
                 <div className='w-12 h-12 rounded-full relative bg-slate-400 overflow-clip'>

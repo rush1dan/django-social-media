@@ -10,7 +10,7 @@ type Props = {
 
 const CommentCard = ({ userComment }: Props) => {
     return (
-        <div className='w-full h-fit p-2 rounded-lg bg-slate-200 overflow-hidden'>
+        <div className='w-full h-fit p-2 rounded-lg bg-slate-300 overflow-hidden'>
             {/* User and Timestamp*/}
             <div className='w-full flex flex-row items-center justify-between'>
                 <Link href={`/profile/${userComment.user.id}/`} className='flex flex-row items-center justify-start gap-x-2'>
