@@ -7,7 +7,11 @@ type Props = {
 
 const NotFollowingProfile = ({profileData}: Props) => {
     return (
-        <div>Not following: {profileData.user.first_name} {profileData.user.last_name}</div>
+        <div className='w-full min-h-full'>
+            <div className='w-full text-center text-3xl font-semibold text-gray-400'>
+                Follow user to see posts
+            </div>
+        </div>
     )
 }
 

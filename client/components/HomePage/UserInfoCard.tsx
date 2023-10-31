@@ -5,7 +5,7 @@ import React from 'react'
 
 type Props = {}
 
-const InfoCard = (props: Props) => {
+const UserInfoCard = (props: Props) => {
     const { user } = useAuth();
     return (
         <div className='w-full rounded-lg bg-white shadow-md shadow-black/10 pt-20 pb-6 px-6 mt-20 relative
@@ -30,4 +30,4 @@ const InfoCard = (props: Props) => {
     )
 }
 
-export default InfoCard
+export default UserInfoCard

@@ -7,8 +7,8 @@ import axios, { AxiosError } from 'axios';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import LoadingWrapper from '../LoadingWrapper';
-import PostCard from '../HomePage/PostCard';
 import ProfileContent from './ProfileContent';
+import ProfileInfoCard from './ProfileInfoCard';
 
 type Props = {}
 
@@ -36,7 +36,7 @@ const ProfileLoader = (props: Props) => {
 
                 if (user?.id === parseInt(profileId[0])) {
                     setProfileType(ProfileType.OWNER);
-                } else if (receivedProfileData.is_following){
+                } else if (receivedProfileData.is_following) {
                     setProfileType(ProfileType.FOLLOWING);
                 } else {
                     setProfileType(ProfileType.NOT_FOLLOWING);
@@ -58,13 +58,29 @@ const ProfileLoader = (props: Props) => {
     }, [])
 
     return (
-        <div className='w-full min-h-full'>
-            <LoadingWrapper fetchState={fetchState}>
-                {
-                    profileData &&
-                    <ProfileContent profileType={profileType} profileData={profileData} />
-                }
-            </LoadingWrapper>
+        <div className='w-full h-full flex flex-row items-center justify-start'>
+            {/* Left SideBar */}
+            <div className='w-1/4 h-full bg-red-400 p-6'>
+                <LoadingWrapper fetchState={fetchState}>
+                    {   profileData &&
+                        <ProfileInfoCard userInfo={profileData?.user} />
+                    }
+                </LoadingWrapper>
+            </div>
+
+            {/* Feed */}
+            <div className='w-1/2 h-full bg-green-400 p-6 overflow-y-auto'>
+                <LoadingWrapper fetchState={fetchState}>
+                    {
+                        profileData &&
+                        <ProfileContent profileType={profileType} profileData={profileData} />
+                    }
+                </LoadingWrapper>
+            </div>
+
+            {/* Right SideBar */}
+            <div className='w-1/4 h-full bg-blue-400'>
+            </div>
         </div>
     )
 }

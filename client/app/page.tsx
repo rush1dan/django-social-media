@@ -1,5 +1,5 @@
 import Feed from '@/components/HomePage/Feed'
-import InfoCard from '@/components/HomePage/InfoCard'
+import InfoCard from '@/components/HomePage/UserInfoCard'
 import TopBar from '@/components/HomePage/TopBar'
 import ProtectedRoute from '@/components/ProtectedRoute'
 

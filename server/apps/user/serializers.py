@@ -30,7 +30,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
 
 ## For retrieving custom required JSON data
-def get_serialized_user_info(user, fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'image', 'followers'], exclude=[]):
+def get_serialized_user_info(user, fields = ['id', 'username', 'first_name', 'last_name', 'bio', 'image'], exclude=[]):
     serialized_user_data = UserSerializer(user).data
     serialized_userinfo_data = UserInfoSerializer(user.info).data
     del serialized_userinfo_data['id']
