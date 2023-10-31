@@ -6,14 +6,15 @@ import { apiPath } from '@/lib/utils'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useCallback, useState } from 'react'
 
 type Props = {
     className?: string
 }
 
 const TopBar = ({ className }: Props) => {
-    const { user } = useAuth();
+    const { user, signOut } = useAuth();
     const [searchText, setSearchText] = useState<string>('');
     const [searchData, setSearchData] = useState<PublicUserInfo[]>([]);
 
@@ -39,10 +40,23 @@ const TopBar = ({ className }: Props) => {
         e.preventDefault();
     }
 
+    const router = useRouter();
+    const handleLogout = useCallback(() => {
+        signOut();
+    }, [])
 
     return (
         <div className={className}>
-            <div className='w-full h-full flex flex-row items-center justify-center'>
+            <div className='w-full h-full flex flex-row items-center justify-around'>
+                {/* Profile button */}
+                <Link href={`/profile/${user?.id}/`} className='flex flex-row items-center justify-center gap-x-2 px-2 py-2 bg-blue-500 hover:bg-blue-600 rounded-full border-2 border-white'>
+                    <div className='w-6 h-6 relative'>
+                        <Image src={'/user.svg'} alt='profile' fill />
+                    </div>
+                    <p className='text-white font-semibold'>{user?.username}</p>
+                </Link>
+
+                {/* Search bar */}
                 <form className='max-w-lg w-1/2 h-[60%] relative' onSubmit={handleSubmit}>
                     <div className='absolute top-1/2 -translate-y-1/2 right-8 translate-x-1/2 h-full aspect-square p-1'>
                         <div className='h-full aspect-square relative'>
@@ -83,6 +97,15 @@ const TopBar = ({ className }: Props) => {
                         </div>
                     }
                 </form>
+
+                {/* Logout button */}
+                <button className='flex flex-row items-center justify-center gap-x-2 px-2 py-2 bg-blue-900 
+                hover:bg-blue-950 rounded-full border-2 border-white' onClick={handleLogout}>
+                    <p className='text-white font-semibold'>Logout</p>
+                    <div className='w-4 h-4 relative'>
+                        <Image src={'/log-out.svg'} alt='logout' fill />
+                    </div>
+                </button>
             </div>
         </div>
     )

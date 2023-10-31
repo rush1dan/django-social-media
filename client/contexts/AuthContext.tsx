@@ -14,6 +14,7 @@ type SignInCredentials = {
 };
 
 type AuthContextData = {
+    signOut: () => void;
     signIn: (credentials: SignInCredentials) => Promise<AxiosResponse>;
     user: User | undefined;
     isAuthenticated: boolean;
@@ -23,12 +24,7 @@ type AuthContextData = {
 export const AuthContext = createContext({} as AuthContextData);
 
 
-export function signOut(router?: AppRouterInstance) {
-    destroyCookie(undefined, ACCESS_TOKEN);
-    destroyCookie(undefined, REFRESH_TOKEN);
-    
-    router?.push('/login');
-}
+
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
     const [authCheckComplete, setAuthCheckComplete] = useState<boolean>(false);
@@ -46,6 +42,16 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         setCookie(undefined, REFRESH_TOKEN, refreshToken, {
             maxAge: 86400, // 1 day
         });
+    }, []);
+
+    const signOut = useCallback(() => {
+        destroyCookie(undefined, ACCESS_TOKEN);
+        destroyCookie(undefined, REFRESH_TOKEN);
+
+        setUser(undefined);
+        setAuthCheckComplete(false);
+
+        router?.push('/login');
     }, []);
     
     const signIn = useCallback(async ({ username, password }: SignInCredentials) => {
@@ -97,24 +103,24 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
                         if (await refreshAccessToken(refresh_token)) {
                             authenticate();
                         } else {
-                            signOut(router);
+                            signOut();
                         };
                     } else {
-                        signOut(router);
+                        signOut();
                     }
                 }
             } else if (refresh_token && refresh_token !== 'undefined') {
                 if (await refreshAccessToken(refresh_token)) {
                     authenticate();
                 } else {
-                    signOut(router);
+                    signOut();
                 }
             } else {
-                signOut(router);
+                signOut();
             }
         } catch (error: any) {
             console.log("Error authenticating: ", error.message);
-            signOut(router);
+            signOut();
         } finally {
             setAuthCheckComplete(true);
         }
@@ -125,7 +131,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     }, []);
 
     return (
-        <AuthContext.Provider value={{ signIn, user, isAuthenticated, authCheckComplete  }}>
+        <AuthContext.Provider value={{ signOut, signIn, user, isAuthenticated, authCheckComplete  }}>
             {children}
         </AuthContext.Provider>
     )
