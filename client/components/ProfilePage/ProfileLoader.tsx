@@ -10,6 +10,7 @@ import LoadingWrapper from '../LoadingWrapper';
 import ProfileContent from './ProfileContent';
 import ProfileInfoCard from './ProfileInfoCard';
 import ActionButton from '../ActionButton';
+import Followers from './Followers';
 
 type Props = {}
 
@@ -115,7 +116,11 @@ const ProfileLoader = (props: Props) => {
                     }
                 </div>
                 {/* Right SideBar */}
-                <div className='w-1/4 h-full bg-slate-100'>
+                <div className='w-1/4 h-full bg-slate-100 overflow-y-auto'>
+                    {
+                        profileType === ProfileType.OWNER &&
+                        <Followers />
+                    }
                 </div>
             </div>
         </LoadingWrapper>
