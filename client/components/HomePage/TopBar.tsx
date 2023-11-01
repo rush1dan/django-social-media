@@ -75,7 +75,7 @@ const TopBar = ({ className, atProfilePage }: Props) => {
                                             {
                                                 searchData.map((userData, index) => {
                                                     return (
-                                                        <Link href={`/profile/${userData.id}`} className='w-full py-4 px-4 hover:bg-slate-500/25' key={index}>
+                                                        <Link href={`/profile/${userData.id}`} className='w-full py-4 px-4 hover:bg-slate-500/25' key={userData.id}>
                                                             <div className='flex flex-row items-center justify-start gap-x-2'>
                                                                 <div className='w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
                                                                     <Image src={userData.image ? getMediaURLFromApiBackend(userData.image) : '/user.svg'} alt='dp' fill />

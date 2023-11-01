@@ -2,6 +2,7 @@ import Feed from '@/components/HomePage/Feed'
 import InfoCard from '@/components/HomePage/UserInfoCard'
 import TopBar from '@/components/HomePage/TopBar'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import Following from '@/components/HomePage/Following'
 
 export default function Home() {
 	return (
@@ -21,7 +22,8 @@ export default function Home() {
 						<Feed />
 					</div>
 					{/* Right SideBar */}
-					<div className='w-1/4 h-full bg-slate-100'>
+					<div className='w-1/4 h-full bg-slate-100 overflow-y-auto'>
+						<Following />
 					</div>
 				</div>
 			</main>
