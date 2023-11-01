@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('apps.user.urls')),
     path('', include('apps.post.urls')),
     path('', include('apps.comment.urls')),
-    path('', include('apps.demo.urls'))
+    #path('', include('apps.demo.urls'))
 ]
 
 if settings.DEBUG:
