@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'apps.user',
     'apps.post',
-    'apps.comment'
+    'apps.comment',
+    'apps.demo'
 ]
 
 MIDDLEWARE = [
