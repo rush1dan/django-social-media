@@ -152,6 +152,48 @@ def follow_users_randomly(api_endpoint, user_ids):
             else:
                 print(f"Failed to follow User {random_follower_id} with User {user_id}. Status code: {response.status_code}")
 
+def edit_profile(api_endpoint, user_id, index):
+    # Define the API endpoint URL
+    url = api_endpoint + f'/{user_id}/'
+
+    # Get the directory of the current script
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+
+    # Define the relative path to the image directory
+    image_directory = os.path.join(script_directory, 'images', 'dps')
+
+    # List all image files in the directory
+    image_files = [f for f in os.listdir(image_directory) if f.endswith(('.jpg', '.png', '.jpeg'))]
+
+    # Select a random image file
+    chosen_image = image_files[index]
+
+    # Generate a random description
+    description = lorem.paragraph()
+
+    # Prepare the form data
+    data = {
+        'bio': description,
+    }
+
+    # Read the selected image file
+    with open(os.path.join(image_directory, chosen_image), 'rb') as image_file:
+        files = {'image': (chosen_image, image_file, 'image/jpeg')}
+
+        # Send the POST request with the form data and image
+        response = requests.put(url, data=data, files=files)
+
+    # Check the response status
+    if response.status_code == 200:
+        print(f"PUT request successful. Description: {description}")
+    else:
+        print(f"Failed to send PUT request. Status code: {response.status_code}")
+
+def edit_profiles(api_endpoint, user_ids: list):
+    for i, user_id in enumerate(user_ids):
+        edit_profile(api_endpoint, user_id, i)
+
+
 ### ----------------- Execution ------------------- ###
 
 
@@ -159,4 +201,6 @@ def follow_users_randomly(api_endpoint, user_ids):
 
 #upload_posts('http://localhost:8000/demo_post', 11)
 
-follow_users_randomly('http://localhost:8000/demo_follow', list(range(11, 22)))
+#follow_users_randomly('http://localhost:8000/demo_follow', list(range(11, 22)))
+
+edit_profiles('http://localhost:8000/demo_profile', list(range(11, 22)))

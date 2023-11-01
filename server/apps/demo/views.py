@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from django.contrib.auth.models import User
-from apps.user.serializers import UserCreateSerializer
+from apps.user.serializers import UserCreateSerializer, UserInfoEditSerializer, get_serialized_user_info
 from apps.post.serializers import PostCreateSerializer, get_serialized_post
 from apps.user.utils import is_following
 
@@ -51,6 +51,21 @@ def follow_view(request, pk):
         elif requestingUser.id != pk:   #type:ignore
             targetUser.info.followers.add(requestingUser.info)  #type:ignore
             return Response({'is_following': True}, status=200)
+        else:
+            return Response("Invalid Request", status=400)
+    except Exception as ex:
+        print_error()
+        return Response('Something went wrong', status=500)
+    
+@api_view(['PUT'])
+def profile_view(request, pk):
+    try:
+        requestingUser = User.objects.get(id=pk)
+        serializer = UserInfoEditSerializer(requestingUser.info, data=request.data)     #type:ignore
+        user_info = None
+        if serializer.is_valid(raise_exception=True):
+            user_info = serializer.save()
+            return Response(get_serialized_user_info(requestingUser), status=200)
         else:
             return Response("Invalid Request", status=400)
     except Exception as ex:
