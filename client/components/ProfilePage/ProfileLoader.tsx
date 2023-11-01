@@ -57,7 +57,7 @@ const ProfileLoader = (props: Props) => {
 
     useEffect(() => {
         fetchProfile();
-    }, [])
+    }, [profileType])
 
     const [followRequestState, setFollowRequestState] = useState<number>(FetchStatus.none);
 
