@@ -68,17 +68,24 @@ user_data = [
     }
 ]
 
+def register_demo_users():
+    # Loop through the user data and send POST requests
+    for user in user_data:
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(user)
 
-# Loop through the user data and send POST requests
-for user in user_data:
-    headers = {'Content-Type': 'application/json'}
-    data = json.dumps(user)
+        # Send the POST request
+        response = requests.post(url, data=data, headers=headers)
 
-    # Send the POST request
-    response = requests.post(url, data=data, headers=headers)
+        # Check the response status
+        if response.status_code == 201:
+            print(f"User '{user['username']}' registered successfully.")
+        else:
+            print(f"Failed to register user '{user['username']}' with status code: {response.status_code}")
 
-    # Check the response status
-    if response.status_code == 201:
-        print(f"User '{user['username']}' registered successfully.")
-    else:
-        print(f"Failed to register user '{user['username']}' with status code: {response.status_code}")
+
+### ----------------- Execution ------------------- ###
+
+
+register_demo_users()
+
