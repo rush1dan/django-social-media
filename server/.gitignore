@@ -92,3 +92,4 @@ cython_debug/
 # Custom
 /data/db
 media
+images
