@@ -14,16 +14,16 @@ const CommentCard = ({ userComment }: Props) => {
             {/* User and Timestamp*/}
             <div className='w-full flex flex-row items-center justify-between'>
                 <Link href={`/profile/${userComment.user.id}/`} className='flex flex-row items-center justify-start gap-x-2'>
-                    <div className='w-12 h-12 flex-none rounded-full relative bg-slate-500 overflow-clip'>
+                    <div className='w-10 h-10 flex-none rounded-full relative bg-slate-500 overflow-clip'>
                         <Image src={userComment.user.image ? getMediaURLFromApiBackend(userComment.user.image) : '/user.svg'} alt='' fill />
                     </div>
-                    <p className='font-semibold text-lg'>{userComment.user.first_name} {userComment.user.last_name}</p>
+                    <p className='text-base font-semibold'>{userComment.user.first_name} {userComment.user.last_name}</p>
                 </Link>
                 <p className='font-medium text-sm text-gray-400'>{formatRelativeTime(userComment.comment.updated_at)}</p>
             </div>
 
             {/* Comment */} 
-            <div className='w-full h-full pl-14'>
+            <div className='w-full h-full pl-12'>
                 <p className='font-normal break-words whitespace-pre-wrap'>{userComment.comment.text}</p>
             </div>
         </div>
