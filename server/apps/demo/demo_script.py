@@ -69,13 +69,14 @@ user_data = [
 ]
 
 def register_demo_users(api_endpoint):
+    url = api_endpoint + '/'
     # Loop through the user data and send POST requests
     for user in user_data:
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(user)
 
         # Send the POST request
-        response = requests.post(api_endpoint, data=data, headers=headers)
+        response = requests.post(url, data=data, headers=headers)
 
         # Check the response status
         if response.status_code == 201:
@@ -86,7 +87,7 @@ def register_demo_users(api_endpoint):
 
 def upload_post(api_endpoint, user_id):
     # Define the API endpoint URL
-    url = api_endpoint + f'{user_id}/'
+    url = api_endpoint + f'/{user_id}/'
 
     # Get the directory of the current script
     script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -127,8 +128,35 @@ def upload_posts(api_endpoint, startinguserid, numofusers=10, numofposts=[3, 7])
         for i in range(0, posts_to_upload):
             upload_post(api_endpoint, user_id)
 
+
+def follow_users_randomly(api_endpoint, user_ids):
+    for user_id in user_ids:
+        # Generate a random number of users to follow between 3 and 7
+        num_to_follow = random.randint(3, 7)
+        
+        # Make sure the number doesn't exceed the total number of users
+        num_to_follow = min(num_to_follow, len(user_ids) - 1)
+        
+        # Select random users to follow (excluding oneself)
+        users_to_follow = random.sample([u for u in user_ids if u != user_id], num_to_follow)
+
+        for random_follower_id in users_to_follow:
+            # Construct the URL for the follow request
+            url = f'{api_endpoint}/{random_follower_id}/?requesting_id={user_id}'
+
+            # Send a POST request to follow the user
+            response = requests.post(url, data={})
+
+            if response.status_code == 200:
+                print(f"User {user_id} is now following User {random_follower_id}.")
+            else:
+                print(f"Failed to follow User {random_follower_id} with User {user_id}. Status code: {response.status_code}")
+
 ### ----------------- Execution ------------------- ###
 
 
-#register_demo_users('http://localhost:8000/demo_register/')
-upload_posts('http://localhost:8000/demo_post/', 11)
+#register_demo_users('http://localhost:8000/demo_register')
+
+#upload_posts('http://localhost:8000/demo_post', 11)
+
+follow_users_randomly('http://localhost:8000/demo_follow', list(range(11, 22)))
