@@ -38,3 +38,4 @@ services:
 ## To interact with the shell within the docker container for this app:
 ## docker compose exec web sh
 ## mkdir to make directory ; rm -r [foldername] to remove folder; mv [foldername] ./[parent_folder]/ to move folder
+## To interact with the python-django shell within docker shell:python manage.py shell 

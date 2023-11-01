@@ -101,6 +101,7 @@ export default function LoginPage() {
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                                     onChange={(e) => setData({ ...data, username: e.target.value })}
+                                    placeholder="john.doe"
                                 />
                             </div>
                         </div>
@@ -118,6 +119,7 @@ export default function LoginPage() {
                                     required
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                                     onChange={(e) => setData({ ...data, password: e.target.value })}
+                                    placeholder="demopassword"
                                 />
                             </div>
                         </div>
@@ -141,13 +143,11 @@ export default function LoginPage() {
                         </Link>
                     </p>
 
-                    <p className="mt-6 text-center text-sm text-gray-500">Or Use A Demo Account:</p>
+                    <p className="mt-6 text-center text-sm text-gray-500">Or Use Any Of The Demo Accounts:</p>
                     <div className="bg-gray-400/20 rounded-lg p-8 mt-4">
-                        <p className="w-full text-center">Email: demo_user@gmail.com</p>
-                        <p className="w-full text-center">Pasword: demopassword</p>
+                        <p className="w-full text-center"><span className="font-bold">Usernames:</span> john.doe, jane.smith, michael.johnson, emily.brown, william.jones, olivia.miller, david.wilson, ava.davis, james.martinez, sophia.lee</p>
                         <br></br>
-                        <p className="w-full text-center">Email: demo_user_100@gmail.com</p>
-                        <p className="w-full text-center">Pasword: demopassword_100</p>
+                        <p className="w-full text-center"><span className="font-bold">Pasword:</span> demopassword</p>
                     </div>
                 </div>
             </div>
