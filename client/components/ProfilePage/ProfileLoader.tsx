@@ -36,7 +36,7 @@ const ProfileLoader = (props: Props) => {
                 setProfileData(receivedProfileData);
                 setFetchState(FetchStatus.success);
 
-                if (user?.id === parseInt(profileId[0])) {
+                if (user?.id === parseInt(profileId.toString())) {
                     setProfileType(ProfileType.OWNER);
                 } else if (receivedProfileData.is_following) {
                     setProfileType(ProfileType.FOLLOWING);
