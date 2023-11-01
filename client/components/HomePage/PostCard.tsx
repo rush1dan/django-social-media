@@ -52,6 +52,11 @@ const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
     const [latestComment, setLatestComment] = useState<UserComment | null>(feedItem.latest_comment);
     const [commentsModalOpened, setCommentsModalOpened] = useState<boolean>(false);
 
+    const imageOnErrorHandler = (event: React.SyntheticEvent<HTMLImageElement, Event>) => {
+        event.currentTarget.src = '/placeholder_image.svg';
+        event.currentTarget.className = "w-full h-auto";
+    };
+
     return (
         <div className='w-full h-fit bg-slate-50 border-2 border-slate-300 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
             {/* User Info */}
@@ -76,7 +81,8 @@ const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
             {/* Image */}
             {
                 feedItem.post.image &&
-                <img src={getMediaURLFromApiBackend(feedItem.post.image)} alt='post image' className='w-full h-auto' />
+                <img src={getMediaURLFromApiBackend(feedItem.post.image)} alt='post image' className='w-full h-auto'
+                    onError={imageOnErrorHandler}/>
             }
 
             {/* Like Comment Links */}
@@ -142,18 +148,18 @@ const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
             {
                 likesModalOpened &&
                 <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] pt-16 rounded-lg bg-slate-50 overflow-clip'
-                        hidden={!likesModalOpened} onClosed={() => setLikesModalOpened(false)}
-                        popUpHeader='Likes'>
+                    hidden={!likesModalOpened} onClosed={() => setLikesModalOpened(false)}
+                    popUpHeader='Likes'>
                     <LikesModal postId={feedItem.post.id} opened={likesModalOpened} />
                 </Popup>
             }
 
-            {/* Focused Post Modal */} 
+            {/* Focused Post Modal */}
             {
                 commentsModalOpened &&
                 <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[42rem] h-[32rem] pt-16 rounded-lg bg-slate-50 overflow-clip'
-                        hidden={!commentsModalOpened} onClosed={() => setCommentsModalOpened(false)}
-                        popUpHeader='Comments'>
+                    hidden={!commentsModalOpened} onClosed={() => setCommentsModalOpened(false)}
+                    popUpHeader='Comments'>
                     <CommentsModal postId={feedItem.post.id} opened={commentsModalOpened} />
                 </Popup>
             }
