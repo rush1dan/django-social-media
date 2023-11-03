@@ -1,12 +1,13 @@
 services:
-  web:
-    build: .
+  server:
+    build:
+      context: ./server/
     image: mydjango_image    #docker compose built image name
     container_name: django_container
     command: bash -c "python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - .:/code   #Only for development :: Remove this volume while deploying and instead COPY all with Dockerfile and docker build
-      - /code/.venv/    #Don't include .venv in the container; only for local intellisense purposes
+      - ./server:/server_app   #Only for development :: Remove this volume while deploying and instead COPY all with Dockerfile and docker build
+      - /server_app/.venv/    #Don't include .venv in the container; only for local intellisense purposes
     ports:
       - "8000:8000"
     environment:    #Replace with .env file in production/deployment
@@ -20,7 +21,7 @@ services:
     container_name: postgres_container
     restart: always
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./server/data/db:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     environment:    #Replace with .env file in production/deployment
