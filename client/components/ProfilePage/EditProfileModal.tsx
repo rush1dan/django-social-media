@@ -2,15 +2,16 @@ import { FeedItem, PublicUserInfo, User } from '@/data/typedata'
 import React, { ReactEventHandler, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import axios from 'axios'
-import { FetchStatus, apiPath, getMediaURLFromApiBackend } from '@/lib/utils'
+import { FetchStatus, apiPath, getFileNameWithExtension, getMediaURLFromApiBackend } from '@/lib/utils'
 import ActionButton from '../ActionButton'
 
 type Props = {
     user?: User,
+    userInfo: PublicUserInfo,
     onModalEdited: (userInfo: PublicUserInfo) => void,
 }
 
-const EditProfileModal = ({ user, onModalEdited }: Props) => {
+const EditProfileModal = ({ user, userInfo, onModalEdited }: Props) => {
     useEffect(() => {
         const postArea = document.getElementById("create_post");
 
@@ -26,10 +27,24 @@ const EditProfileModal = ({ user, onModalEdited }: Props) => {
 
     const [editingState, setEditingState] = useState<number>(FetchStatus.none);
 
-    const [bio, setBio] = useState<string>('');
+    const [bio, setBio] = useState<string | undefined>(userInfo?.bio);
 
+    const [inputImageSrc, setInputImageSrc] = useState<string | null>('');
     const [inputImage, setInputImage] = useState<File | null>(null);
-    const [inputImageSrc, setInputImageSrc] = useState<string | null>(null);
+
+    const fetchExistingImage = async (imageURL: string) => {
+        const response = await axios.get(getMediaURLFromApiBackend(imageURL), {
+            responseType: 'blob'
+        });
+        const imageFile = new File([response.data], getFileNameWithExtension(imageURL)!);
+        setInputImage(imageFile);
+        setInputImageSrc(URL.createObjectURL(imageFile));
+    }
+    useEffect(() => {
+        if (userInfo?.image) {
+            fetchExistingImage(userInfo.image);
+        }
+    }, []);
 
     const editFormRef = useRef<HTMLFormElement>(null);
 
@@ -38,7 +53,9 @@ const EditProfileModal = ({ user, onModalEdited }: Props) => {
         setEditingState(FetchStatus.pending);
 
         const formData = new FormData();
-        formData.append('bio', bio);
+        if (bio) {
+            formData.append('bio', bio);
+        }
         if (inputImage) {
             formData.append('image', inputImage);
         }
@@ -106,7 +123,8 @@ const EditProfileModal = ({ user, onModalEdited }: Props) => {
                         </div>
 
                         <textarea className='w-full mb-4 overflow-hidden rounded-lg bg-slate-100/10 resize-none text-base' name="create_post" id="create_post" rows={1}
-                            placeholder={`Write something about you, ${user?.first_name}...`} required onChange={e => setBio(e.target.value)}>
+                            placeholder={`Write something about you, ${user?.first_name}...`} required onChange={e => setBio(e.target.value)}
+                            defaultValue={bio}>
                         </textarea>
                     </div>
 

@@ -1,3 +1,5 @@
+import * as path from 'path';
+
 const FetchStatus = {
     none: -2,
     error: -1,
@@ -34,5 +36,13 @@ export function formatRelativeTime(dateTimeString: string): string {
     } else {
       return days + "d ago";
     }
+}
+  
+export function getFileNameWithExtension(filePath: string): string | null {
+  const parsedPath = path.parse(filePath);
+  if (parsedPath.base) {
+    return parsedPath.base;
   }
+  return null;
+}
   

@@ -64,7 +64,7 @@ const ProfileInfoCard = ({ userInfo }: Props) => {
                 <Popup className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[32rem] pt-16 rounded-lg bg-slate-50 overflow-clip'
                     hidden={!editModalOpened} onClosed={() => setEditModalOpened(false)}
                     popUpHeader='Edit Profile'>
-                    <EditProfileModal user={user} onModalEdited={onProfileEdited} />
+                    <EditProfileModal user={user} userInfo={userInfo} onModalEdited={onProfileEdited} />
                 </Popup>
             }
         </div>

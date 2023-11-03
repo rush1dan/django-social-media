@@ -1,18 +1,16 @@
 services:
-  client:
-    build:
-      context: ./client/
-    image: myreact_image
-    container_name: react_container
-    command: dev
+  db:
+    image: postgres
+    container_name: postgres_container
+    restart: always
     volumes:
-      - ./client:/client_app
+      - ./server/data/db:/var/lib/postgresql/data
     ports:
-      - "3000:3000"
-    # links:
-    #   - "server:localhost"
-    depends_on:
-      - server
+      - "5432:5432"
+    environment:    #Replace with .env file in production/deployment
+      - POSTGRES_DB=social_media_db
+      - POSTGRES_USER=demo_user
+      - POSTGRES_PASSWORD=demo_password
   server:
     build:
       context: ./server/
@@ -30,18 +28,20 @@ services:
       - POSTGRES_PASSWORD=demo_password
     depends_on:
       - db
-  db:
-    image: postgres
-    container_name: postgres_container
-    restart: always
-    volumes:
-      - ./server/data/db:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    environment:    #Replace with .env file in production/deployment
-      - POSTGRES_DB=social_media_db
-      - POSTGRES_USER=demo_user
-      - POSTGRES_PASSWORD=demo_password
+  # client:
+  #   build:
+  #     context: ./client/
+  #   image: myreact_image
+  #   container_name: react_container
+  #   command: dev
+  #   volumes:
+  #     - ./client:/client_app
+  #   ports:
+  #     - "3000:3000"
+  #   # links:
+  #   #   - "server:localhost"
+  #   depends_on:
+  #     - server
 
 
 
