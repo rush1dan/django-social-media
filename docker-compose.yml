@@ -28,20 +28,20 @@ services:
       - POSTGRES_PASSWORD=demo_password
     depends_on:
       - db
-  # client:
-  #   build:
-  #     context: ./client/
-  #   image: myreact_image
-  #   container_name: react_container
-  #   command: dev
-  #   volumes:
-  #     - ./client:/client_app
-  #   ports:
-  #     - "3000:3000"
-  #   # links:
-  #   #   - "server:localhost"
-  #   depends_on:
-  #     - server
+  client:
+    build:
+      context: ./client/
+    image: myreact_image
+    container_name: react_container
+    command: dev
+    volumes:
+      - ./client:/client_app
+    ports:
+      - "3000:3000"
+    # links:
+    #   - "server:localhost"
+    depends_on:
+      - server
 
 
 

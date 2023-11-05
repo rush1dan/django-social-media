@@ -62,7 +62,7 @@ const Feed = (props: Props) => {
                     </div>
                     <button type='button' className='w-full rounded-full h-10 text-left px-4 py-2 bg-slate-200 hover:bg-slate-300 text-gray-500 font-medium'
                         onClick={e => setPostModalOpened(true)}>
-                        What's on your mind, {user?.first_name}?
+                        What&apos;s on your mind, {user?.first_name}?
                     </button>
                 </div>
                 <button type='button' className='w-full h-10 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md'
