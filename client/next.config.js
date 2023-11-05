@@ -2,10 +2,16 @@
 const nextConfig = {
     images: {
         domains: [
-            'localhost',
-            '127.0.0.1'
+            'localhost'
         ]
-    }
+    },
+    webpack: function (config, context) {
+        config.watchOptions = {
+            poll: 1000,
+            aggregateTimeout: 300,
+        };
+        return config;
+    },
 }
 
 module.exports = nextConfig
