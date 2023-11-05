@@ -4,8 +4,8 @@ import { FetchStatus, apiPath, getMediaURLFromApiBackend } from '@/lib/utils'
 import axios from 'axios'
 import React, { useState, useCallback, useEffect } from 'react'
 import LoadingWrapper from './LoadingWrapper'
-import Image from 'next/image'
 import Link from 'next/link'
+import UserImage from './UserImage'
 
 type Props = {
     postId: number,
@@ -53,9 +53,7 @@ const LikesModal = ({ postId, opened }: Props) => {
                         return (
                             <Link href={`/profile/${likedUser.user.id}/`} key={likedUser.user.id}>
                                 <div className='flex flex-row justify-center items-center gap-x-4'>
-                                    <div className='w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
-                                        <Image src={likedUser.user.image ? getMediaURLFromApiBackend(likedUser.user.image) : '/user.svg'} alt='' fill />
-                                    </div>
+                                    <UserImage src={likedUser.user.image} widthClass='w-12' heightClass='h-12' />
                                     <div className='flex flex-col items-start justify-center'>
                                         <p className='text-base font-semibold'>{likedUser.user.first_name} {likedUser.user.last_name}</p>
                                     </div>

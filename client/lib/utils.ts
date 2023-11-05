@@ -9,12 +9,12 @@ const FetchStatus = {
 
 export { FetchStatus }
 
-export function apiPath(path: string) {
-    return `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`
+export function apiPath(path: string, withoutSlash: boolean = false) {
+    return `${'http://localhost:8000'}${withoutSlash ? '' : '/'}${path}`
 }
 
-export function getMediaURLFromApiBackend(mediaURL: string | null) {
-  return `${process.env.NEXT_PUBLIC_BACKEND_URL}${mediaURL}`
+export function getMediaURLFromApiBackend(mediaURL: string | null | undefined) {
+  return apiPath(mediaURL ?? '', true);
 }
 
 export function formatRelativeTime(dateTimeString: string): string {

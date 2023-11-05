@@ -7,9 +7,10 @@ import axios from 'axios'
 import { useAuth } from '@/hooks/userAuth'
 import { FeedItem } from '@/data/typedata'
 import PostCard from './PostCard'
-import Image from 'next/image'
 import Popup from '../Popup'
 import CreatePostModal from '../CreatePostModal'
+import { apiPath } from '@/lib/utils'
+import UserImage from '../UserImage'
 
 type Props = {}
 
@@ -23,7 +24,7 @@ const Feed = (props: Props) => {
     const fetchData = useCallback(async () => {
         setFetchState(FetchStatus.pending);
         try {
-            const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/feed/`, {
+            const response = await axios.get(apiPath(`feed/`), {
                 headers: {
                     Authorization: `Bearer ${user?.access_token}`
                 }
@@ -57,9 +58,7 @@ const Feed = (props: Props) => {
             {/* Create Post */}
             <div className='w-full h-fit p-2 bg-slate-50 border-2 border-slate-200 mb-6 rounded-lg'>
                 <div className='flex flex-row items-center justify-start gap-x-2 mb-2'>
-                    <div className='flex-none w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
-                        <Image src={user?.image ? getMediaURLFromApiBackend(user.image) : '/user.svg'} alt='dp' fill />
-                    </div>
+                    <UserImage src={user?.image} widthClass='w-12' heightClass='h-12' />
                     <button type='button' className='w-full rounded-full h-10 text-left px-4 py-2 bg-slate-200 hover:bg-slate-300 text-gray-500 font-medium'
                         onClick={e => setPostModalOpened(true)}>
                         What&apos;s on your mind, {user?.first_name}?

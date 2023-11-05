@@ -1,6 +1,5 @@
 import { FeedItem, UserComment } from '@/data/typedata'
-import Image from 'next/image'
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useCallback } from 'react'
 import ActionButton from '../ActionButton'
 import axios from 'axios'
 import { FetchStatus, apiPath, formatRelativeTime, getMediaURLFromApiBackend } from '@/lib/utils'
@@ -12,6 +11,8 @@ import CommentsModal from '../CommentsModal'
 import CommentCard from '../CommentCard'
 import CommentBox from '../CommentBox'
 import Link from 'next/link'
+import UserImage from '../UserImage'
+import Image from 'next/image'
 
 const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
     const { user } = useAuth();
@@ -61,9 +62,7 @@ const PostCard = ({ feedItem }: { feedItem: FeedItem }) => {
         <div className='w-full h-fit bg-slate-50 border-2 border-slate-300 p-4 flex flex-col items-start justify-start rounded-lg overflow-clip gap-y-2'>
             {/* User Info */}
             <Link href={`/profile/${feedItem.user.id}/`} className='flex flex-row justify-center items-center gap-x-2'>
-                <div className='w-12 h-12 rounded-full relative bg-slate-400 overflow-clip'>
-                    <Image src={feedItem.user.image ? getMediaURLFromApiBackend(feedItem.user.image) : '/user.svg'} alt='dp' fill />
-                </div>
+                <UserImage src={feedItem.user.image} widthClass='w-12' heightClass='h-12' />
                 <div className='flex flex-col items-start justify-center'>
                     <p className='text-base font-semibold'>{feedItem.user.first_name} {feedItem.user.last_name}</p>
                     <p className='font-medium text-sm text-gray-400'>{formatRelativeTime(feedItem.post.updated_at)}</p>

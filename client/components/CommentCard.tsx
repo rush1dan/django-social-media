@@ -1,8 +1,8 @@
-import { UserComment, PublicUserInfo } from '@/data/typedata'
+import { UserComment } from '@/data/typedata'
 import React from 'react'
-import Image from 'next/image'
-import { formatRelativeTime, getMediaURLFromApiBackend } from '@/lib/utils'
+import { formatRelativeTime } from '@/lib/utils'
 import Link from 'next/link'
+import UserImage from './UserImage'
 
 type Props = {
     userComment: UserComment
@@ -14,9 +14,7 @@ const CommentCard = ({ userComment }: Props) => {
             {/* User and Timestamp*/}
             <div className='w-full flex flex-row items-center justify-between'>
                 <Link href={`/profile/${userComment.user.id}/`} className='flex flex-row items-center justify-start gap-x-2'>
-                    <div className='w-10 h-10 flex-none rounded-full relative bg-slate-500 overflow-clip'>
-                        <Image src={userComment.user.image ? getMediaURLFromApiBackend(userComment.user.image) : '/user.svg'} alt='' fill />
-                    </div>
+                    <UserImage src={userComment.user.image} widthClass='w-10' heightClass='h-10' />
                     <p className='text-base font-semibold'>{userComment.user.first_name} {userComment.user.last_name}</p>
                 </Link>
                 <p className='font-medium text-sm text-gray-400'>{formatRelativeTime(userComment.comment.updated_at)}</p>

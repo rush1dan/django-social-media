@@ -1,10 +1,9 @@
 'use client'
 
 import { useAuth } from '@/hooks/userAuth'
-import Image from 'next/image'
 import React from 'react'
 import Link from 'next/link'
-import { getMediaURLFromApiBackend } from '@/lib/utils'
+import UserImage from '../UserImage'
 
 type Props = {}
 
@@ -27,9 +26,7 @@ const UserInfoCard = (props: Props) => {
 
             {/* Image */}
             <div className='absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2 w-32 h-32 z-10'>
-                <div className='w-full h-full bg-slate-600 rounded-full relative overflow-clip'>
-                    <Image src={user?.image ? getMediaURLFromApiBackend(user?.image) : '/user.svg'} alt='dp' fill />
-                </div>
+                <UserImage src={user?.image} fill />
             </div>
         </Link>
     )

@@ -33,15 +33,13 @@ services:
       context: ./client/
     image: myreact_image
     container_name: react_container
-    command: start
+    command: dev
     volumes:
       - ./client:/client_app
       - /client_app/node_modules/
       - /client_app/.next/
     ports:
       - "3000:3000"
-    links:
-      - "server:localhost"
     depends_on:
       - server
 

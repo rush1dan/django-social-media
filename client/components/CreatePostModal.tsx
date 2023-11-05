@@ -1,9 +1,10 @@
 import { FeedItem, User } from '@/data/typedata'
-import React, { ReactEventHandler, useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
-import { FetchStatus, apiPath, getMediaURLFromApiBackend } from '@/lib/utils'
+import { FetchStatus, apiPath } from '@/lib/utils'
 import ActionButton from './ActionButton'
+import UserImage from './UserImage'
+import Image from 'next/image'
 
 type Props = {
     user?: User,
@@ -79,9 +80,7 @@ const CreatePostModal = ({ user, onPostCreated }: Props) => {
                 <form onSubmit={e => handleSubmit(e)} className='w-full min-h-full pb-16' ref={postFormRef}>
 
                     <div className='flex flex-row items-center justify-start gap-x-2 mb-2'>
-                        <div className='flex-none w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
-                            <Image src={user?.image ? getMediaURLFromApiBackend(user.image) : '/user.svg'} alt='dp' fill />
-                        </div>
+                        <UserImage src={user?.image} widthClass='w-12' heightClass='h-12' />
                         <p className='font-semibold'>{user?.first_name} {user?.last_name}</p>
                     </div>
 

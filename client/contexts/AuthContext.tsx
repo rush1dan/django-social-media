@@ -6,7 +6,7 @@ import { createContext, useEffect, useState, useCallback } from "react";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/data/constants";
 import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { apiPath } from "@/lib/utils";
 
 type SignInCredentials = {
     username: string;
@@ -55,7 +55,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     }, []);
     
     const signIn = useCallback(async ({ username, password }: SignInCredentials) => {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/token/`, {
+        const response = await axios.post(apiPath(`token/`), {
             'username': username,
             'password': password
         });
@@ -69,7 +69,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
 
     const refreshAccessToken = useCallback(async (refreshToken: string) => {
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/token/refresh/`, {
+            const response = await axios.post(apiPath(`token/refresh/`), {
                 'refresh': refreshToken
             });
             if (response.status === 200) {
@@ -88,7 +88,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         try {
             const { [ACCESS_TOKEN]: access_token, [REFRESH_TOKEN]: refresh_token } = parseCookies();
             if (access_token && access_token !== 'undefined') {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/user/`, {
+                const response = await axios.get(apiPath(`user/`), {
                     headers: {
                         Authorization: `Bearer ${access_token}`
                     }

@@ -7,7 +7,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import LoadingWrapper from '../LoadingWrapper';
 import Link from 'next/link';
-import Image from 'next/image';
+import UserImage from '../UserImage';
 
 type Props = {}
 
@@ -57,9 +57,7 @@ const Followers = (props: Props) => {
                                 return (
                                     <Link href={`/profile/${followerUser.id}`} className='w-full py-4 px-4 hover:bg-slate-500/25' key={followerUser.id}>
                                         <div className='flex flex-row items-center justify-start gap-x-2'>
-                                            <div className='w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
-                                                <Image src={followerUser.image ? getMediaURLFromApiBackend(followerUser.image) : '/user.svg'} alt='dp' fill />
-                                            </div>
+                                            <UserImage src={followerUser.image} widthClass='w-12' heightClass='h-12' />
                                             <div className='text-center font-semibold'>
                                                 {followerUser.first_name} {followerUser.last_name}
                                             </div>

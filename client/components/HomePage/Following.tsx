@@ -2,12 +2,12 @@
 
 import { PublicUserInfo } from '@/data/typedata';
 import { useAuth } from '@/hooks/userAuth';
-import { FetchStatus, apiPath, getMediaURLFromApiBackend } from '@/lib/utils';
+import { FetchStatus, apiPath } from '@/lib/utils';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import LoadingWrapper from '../LoadingWrapper';
 import Link from 'next/link';
-import Image from 'next/image';
+import UserImage from '../UserImage';
 
 type Props = {}
 
@@ -57,9 +57,8 @@ const Following = (props: Props) => {
                                 return (
                                     <Link href={`/profile/${followingUser.id}`} className='w-full py-4 px-4 hover:bg-slate-500/25' key={followingUser.id}>
                                         <div className='flex flex-row items-center justify-start gap-x-2'>
-                                            <div className='w-12 h-12 rounded-full relative bg-slate-500 overflow-clip'>
-                                                <Image src={followingUser.image ? getMediaURLFromApiBackend(followingUser.image) : '/user.svg'} alt='dp' fill />
-                                            </div>
+                                            <UserImage src={followingUser.image} widthClass='w-12' heightClass='h-12' />
+
                                             <div className='text-center font-semibold'>
                                                 {followingUser.first_name} {followingUser.last_name}
                                             </div>
