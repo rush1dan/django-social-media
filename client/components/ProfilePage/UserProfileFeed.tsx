@@ -11,7 +11,7 @@ type Props = {
     profileData: ProfileData
 }
 
-const UserProfile = ({ profileData }: Props) => {
+const UserProfileFeed = ({ profileData }: Props) => {
     const { user } = useAuth();
 
     const [postModalOpened, setPostModalOpened] = useState<boolean>(false);
@@ -68,4 +68,4 @@ const UserProfile = ({ profileData }: Props) => {
     )
 }
 
-export default UserProfile
+export default UserProfileFeed

@@ -9,7 +9,7 @@ type Props = {
 
 const ActionLink = ({children, isPending, onClick}: Props) => {
     return (
-        <div onClick={onClick} className={`cursor-pointer ${isPending ? 'pointer-events-none opacity-25' : ''}`}>
+        <div onClick={onClick} className={`cursor-pointer ${isPending ? 'pointer-events-none' : ''}`}>
             {children}
         </div>
     )

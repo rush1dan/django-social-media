@@ -5,7 +5,7 @@ type Props = {
     profileData: ProfileData
 }
 
-const NotFollowingProfile = ({profileData}: Props) => {
+const NotFollowingProfileFeed = ({profileData}: Props) => {
     return (
         <div className='w-full min-h-full'>
             <div className='w-full text-center text-3xl font-semibold text-gray-400'>
@@ -15,4 +15,4 @@ const NotFollowingProfile = ({profileData}: Props) => {
     )
 }
 
-export default NotFollowingProfile
+export default NotFollowingProfileFeed

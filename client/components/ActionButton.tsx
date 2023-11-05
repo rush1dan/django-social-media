@@ -11,7 +11,7 @@ type Props = {
 
 const ActionButton = ({children, className, buttonType='button', isPending, onClick, isRestricted = false}: Props) => {
     return (
-        <button type={buttonType} onClick={onClick} disabled={isPending || isRestricted} className={`${className} ${isPending ? 'cursor-not-allowed pointer-events-none' : ''} ${isRestricted ? 'cursor-not-allowed' : ''}`}>
+        <button type={buttonType} onClick={onClick} disabled={isPending || isRestricted} className={`${className} ${isPending ? 'pointer-events-none' : ''} ${isRestricted ? 'cursor-not-allowed' : ''}`}>
             {children}
         </button>
     )

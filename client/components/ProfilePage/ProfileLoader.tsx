@@ -7,7 +7,7 @@ import axios, { AxiosError } from 'axios';
 import { useParams } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import LoadingWrapper from '../LoadingWrapper';
-import ProfileContent from './ProfileContent';
+import ProfileFeed from './ProfileFeed';
 import ProfileInfoCard from './ProfileInfoCard';
 import ActionButton from '../ActionButton';
 import Followers from './Followers';
@@ -112,7 +112,7 @@ const ProfileLoader = (props: Props) => {
                 <div className='w-1/2 h-full p-6 overflow-y-auto'>
                     {
                         profileData &&
-                        <ProfileContent profileType={profileType} profileData={profileData} />
+                        <ProfileFeed profileType={profileType} profileData={profileData} />
                     }
                 </div>
                 {/* Right SideBar */}

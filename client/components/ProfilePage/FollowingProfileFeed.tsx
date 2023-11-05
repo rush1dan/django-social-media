@@ -6,7 +6,7 @@ type Props = {
     profileData: ProfileData
 }
 
-const FollowingProfile = ({profileData}: Props) => {
+const FollowingProfileFeed = ({profileData}: Props) => {
     return (
         <div className='w-full min-h-full'>
             {
@@ -29,4 +29,4 @@ const FollowingProfile = ({profileData}: Props) => {
     )
 }
 
-export default FollowingProfile
+export default FollowingProfileFeed
