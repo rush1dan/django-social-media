@@ -33,11 +33,11 @@ services:
       context: ./client/
     image: myreact_image
     container_name: react_container
-    command: dev
+    command: dev  #use start for running next.js application build
     volumes:
       - ./client:/client_app
-      - /client_app/node_modules/
-      - /client_app/.next/
+      - /client_app/node_modules/   #Don't sync node_modules in the container ; it will come from docker compose build
+      - /client_app/.next/          #Don't sync .next folder in the container ; it will come from docker compose build
     ports:
       - "3000:3000"
     depends_on:
