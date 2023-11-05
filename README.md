@@ -4,7 +4,7 @@
 <!-- <div align='center'><h3><a href="https://vehicle-tracking-rush1dan.vercel.app" target="_blank">View Live Demo</a></h3></div> -->
 
 ## About
-This is a full stack modern social media app built with **Django** as the backend, **PostgreSQL** as the database and **Next.js** with **React**, **TypeScript** and **TailwindCSS** on the frontend. The backend comprises of necessary API endpoints built with the **Django REST framework**. The application securely handles user authentication and session management with the help of **Simple JWT**. The application was built from the start through a seamless **Dockerized** development workflow where the whole backend (Django + Postgres containers) was setup with a single **Docker Compose** command and ready to work.
+This is a full stack modern social media app built with **Django** as the backend, **PostgreSQL** as the database and **Next.js** with **React**, **TypeScript** and **TailwindCSS** on the frontend. The backend comprises of necessary API endpoints built with the **Django REST framework**. The application securely handles user authentication and session management with the help of **Simple JWT**. The application was built from the start through a seamless **Dockerized** development workflow where the entire application stack [ Frontend(React), Backend(Django) & Database(Postgres) containers ] can be setup with a single **Docker Compose** command and ready to work.
 
 ## Features
 - User authentication and session management with JWT
@@ -19,19 +19,9 @@ This is a full stack modern social media app built with **Django** as the backen
 
 ## Dev
 
-First, run the development servers for the server and client apps:
-
-For the server app, cd into the server directory and:
+With one single command, spin up the entire application stack.
 ```bash
 docker compose up
-```
-For the client app, cd into the client directory and:
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to use the started application.
