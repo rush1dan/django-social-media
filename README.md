@@ -18,16 +18,20 @@ This is a full stack modern social media app built with **Django** as the backen
 - Demo accounts to test out the app
 
 ## Dev
+First, build the application once with:
+```bash
+docker compose build
+```
 
-With one single command, spin up the entire application stack.
+Then, with one single command, spin up the entire application stack.
 ```bash
 docker compose up
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to use the started application.
 
-<!-- ## Demo
-[![IMAGE ALT TEXT HERE](VehicleTracking_YT.png)](https://www.youtube.com/watch?v=IUBV-C7MmDs) -->
+## Demo
+[![IMAGE ALT TEXT HERE](DjangoSocialMedia_YT.png)](https://youtu.be/VdatQf1iP3w)
 
 ## Built With
 <div>
